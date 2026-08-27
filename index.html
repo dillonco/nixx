@@ -11,67 +11,41 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --ink: #151412;
-    --muted: #3d3a33;
-    --hair: rgba(21, 20, 18, 0.55);
-    --teal: #4e8f86;
-    --green: #6faa2a;
-    --amber: #e8931a;
-    --orange: #e8763a;
-    --rust: #c25436;
-    --brick: #a8402e;
-    --smoke: #8a857a;
+    --ink: #17150f;
+    --muted: #37332a;
+    --hair: rgba(23, 21, 15, 0.6);
   }
-  html { scroll-behavior: smooth; }
   body {
     font: 14px/1.7 ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
     color: var(--ink);
-    background: #d9d3c2;
+    background: #d8cba8;
     min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* ---- animated undertone gradient ---- */
-  .bg { position: fixed; inset: -25%; z-index: 0; pointer-events: none; }
-  .bg i {
-    position: absolute;
-    border-radius: 50%;
-    will-change: transform;
+  /* ---- animated undertone gradient (WebGL domain-warped noise) ---- */
+  #gl {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
   }
-  .bg .b1 {
-    width: 75vmax; height: 75vmax; left: -12%; top: -8%;
-    background: radial-gradient(circle, rgba(232, 118, 58, 0.85) 0%, rgba(232, 118, 58, 0.4) 42%, transparent 68%);
-    animation: drift1 47s ease-in-out infinite alternate;
-  }
-  .bg .b2 {
-    width: 65vmax; height: 65vmax; left: 22%; top: 26%;
-    background: radial-gradient(circle, rgba(242, 221, 171, 0.9) 0%, rgba(242, 221, 171, 0.42) 45%, transparent 70%);
-    animation: drift2 61s ease-in-out infinite alternate;
-  }
-  .bg .b3 {
-    width: 70vmax; height: 70vmax; right: -8%; top: -12%;
-    background: radial-gradient(circle, rgba(74, 105, 130, 0.85) 0%, rgba(74, 105, 130, 0.4) 45%, transparent 70%);
-    animation: drift3 73s ease-in-out infinite alternate;
-  }
-  .bg .b4 {
-    width: 60vmax; height: 60vmax; left: 30%; bottom: -14%;
-    background: radial-gradient(circle, rgba(78, 143, 134, 0.75) 0%, rgba(78, 143, 134, 0.35) 45%, transparent 70%);
-    animation: drift4 89s ease-in-out infinite alternate;
-  }
-  .bg .b5 {
-    width: 46vmax; height: 46vmax; right: 16%; bottom: 6%;
-    background: radial-gradient(circle, rgba(240, 200, 120, 0.6) 0%, transparent 62%);
-    animation: drift1 53s ease-in-out infinite alternate-reverse;
-  }
-  @keyframes drift1 { to { transform: translate(14vw, 10vh) scale(1.22) rotate(20deg); } }
-  @keyframes drift2 { to { transform: translate(-12vw, -8vh) scale(1.3) rotate(-14deg); } }
-  @keyframes drift3 { to { transform: translate(-10vw, 12vh) scale(1.18) rotate(10deg); } }
-  @keyframes drift4 { to { transform: translate(10vw, -10vh) scale(1.26) rotate(-18deg); } }
 
   /* ---- film grain over everything ---- */
   .grain {
-    position: fixed; inset: 0; z-index: 6; pointer-events: none; opacity: .5;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.38 0 0 0 0 0.33 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+    position: fixed; inset: 0; z-index: 6; pointer-events: none; opacity: .62;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.4 0 0 0 0 0.35 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  /* ---- page-level silkscreen traces, corners ---- */
+  .silk {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .34;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='210'%3E%3Cg fill='none' stroke='%2317150f' stroke-width='1.3'%3E%3Cpath d='M0 168h58l16-16h64l12-12h38'/%3E%3Cpath d='M0 180h74l16-16h54'/%3E%3Cpath d='M0 192h90l16-16h30'/%3E%3Cpath d='M56 210v-22'/%3E%3C/g%3E%3Cg fill='%2317150f'%3E%3Ccircle cx='190' cy='140' r='2.2'/%3E%3Ccircle cx='146' cy='164' r='2.2'/%3E%3Ccircle cx='138' cy='176' r='2.2'/%3E%3C/g%3E%3Cg fill='none' stroke='%2317150f' stroke-width='1.1'%3E%3Ccircle cx='214' cy='128' r='3.4'/%3E%3C/g%3E%3Ccircle cx='214' cy='128' r='1.3' fill='%2317150f'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='190'%3E%3Cg fill='none' stroke='%2317150f' stroke-width='1.3'%3E%3Cpath d='M300 34h-62l-14 14h-58l-12 12h-30'/%3E%3Cpath d='M300 22h-46l-14 14h-48'/%3E%3Cpath d='M300 46h-78l-14 14h-26'/%3E%3Cpath d='M252 0v20'/%3E%3C/g%3E%3Cg fill='%2317150f'%3E%3Ccircle cx='124' cy='60' r='2.2'/%3E%3Ccircle cx='166' cy='48' r='2.2'/%3E%3C/g%3E%3Cg fill='none' stroke='%2317150f' stroke-width='1.1'%3E%3Ccircle cx='100' cy='74' r='3.4'/%3E%3C/g%3E%3Ccircle cx='100' cy='74' r='1.3' fill='%2317150f'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, no-repeat;
+    background-position: left bottom, right top;
   }
 
   /* ---- hairline frame + corner metadata ---- */
@@ -79,6 +53,22 @@
     position: fixed; inset: 14px; z-index: 5; pointer-events: none;
     border: 1px solid var(--hair);
   }
+  /* fiducial crosshairs on the frame corners */
+  .fid {
+    position: fixed; z-index: 5; width: 13px; height: 13px; pointer-events: none;
+    background:
+      linear-gradient(var(--hair), var(--hair)) 50% 0 / 1px 100% no-repeat,
+      linear-gradient(var(--hair), var(--hair)) 0 50% / 100% 1px no-repeat;
+  }
+  .fid::after {
+    content: ""; position: absolute; inset: 3px;
+    border: 1px solid var(--hair); border-radius: 50%;
+  }
+  .fid.tl { top: 8px; left: 8px; }
+  .fid.tr { top: 8px; right: 8px; }
+  .fid.bl { bottom: 8px; left: 8px; }
+  .fid.br { bottom: 8px; right: 8px; }
+
   .meta {
     position: fixed; z-index: 7;
     font-family: "Doto", monospace;
@@ -87,18 +77,31 @@
     line-height: 1.55; color: var(--ink);
   }
   .meta b { font-weight: 900; }
-  .meta.tl { top: 22px; left: 26px; }
-  .meta.tr { top: 22px; right: 26px; text-align: right; }
-  .meta.bl { bottom: 22px; left: 26px; }
-  .meta.br { bottom: 22px; right: 26px; text-align: right; }
+  .meta.tl { top: 24px; left: 30px; }
+  .meta.tr { top: 24px; right: 30px; text-align: right; }
+  .meta.bl { bottom: 24px; left: 30px; }
+  .meta.br { bottom: 24px; right: 30px; text-align: right; }
   .meta a { color: inherit; }
+
+  /* ---- left number rail ---- */
+  .rail {
+    position: fixed; z-index: 7;
+    left: 30px; top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: .55rem;
+    font-family: "Doto", monospace;
+    font-weight: 700; font-size: 11px; letter-spacing: .1em;
+  }
+  .rail a { color: var(--ink); opacity: .38; text-decoration: none; }
+  .rail a:hover, .rail a:focus-visible { opacity: 1; }
+  @media (max-width: 980px) { .rail { display: none; } }
 
   /* ---- layout ---- */
   .page {
-    position: relative; z-index: 1;
-    max-width: 54rem;
+    position: relative; z-index: 2;
+    max-width: 52rem;
     margin: 0 auto;
-    padding: 6rem 2rem 7rem;
+    padding: 6.5rem 2rem 8rem;
   }
 
   a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: 3px; }
@@ -119,44 +122,14 @@
     line-height: 1;
     margin: .6rem 0 1.5rem;
   }
-  .intro { max-width: 34rem; color: var(--muted); }
-  .facts {
-    display: flex; gap: 4rem; flex-wrap: wrap;
-    margin-top: 2rem;
-  }
+  .intro { max-width: 33rem; color: var(--muted); }
+  .facts { display: flex; gap: 4rem; flex-wrap: wrap; margin-top: 2.2rem; }
   .facts h3 {
     font-family: "Doto", monospace;
     font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
     color: var(--muted); font-weight: 700; margin-bottom: .3rem;
   }
   .facts p { font-size: .84rem; }
-
-  /* ---- hardware shelf ---- */
-  .shelf {
-    display: flex;
-    gap: 3.5rem;
-    align-items: flex-end;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 4.5rem 0 1rem;
-  }
-  .dev { display: flex; flex-direction: column; align-items: center; }
-  .dev .scale-wrap { transform-origin: bottom center; }
-  .dev.player .scale-wrap { transform: scale(.66); margin: -63px -56px 0; }
-  .dev.console .scale-wrap { transform: scale(.66); margin: -71px -37px 0; }
-  .dev figcaption {
-    margin-top: .9rem;
-    font-family: "Doto", monospace;
-    font-weight: 700;
-    font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-    color: var(--muted);
-  }
-  .dev-shadow {
-    width: 70%; height: 14px; margin-top: 10px;
-    border-radius: 50%;
-    background: rgba(40, 30, 10, 0.35);
-    filter: blur(8px);
-  }
 
   /* ---- sections ---- */
   h2 {
@@ -165,574 +138,81 @@
     font-size: 13px; font-weight: 900;
     letter-spacing: .3em; text-transform: uppercase;
     color: var(--ink);
-    margin: 4rem 0 1.2rem;
+    margin: 4.5rem 0 .4rem;
   }
   h2::after { content: ""; flex: 1; border-bottom: 1px solid var(--hair); }
 
-  /* ---- acrylic slab cards ---- */
+  /* ---- editorial project rows with trace dividers ---- */
   ul.index { list-style: none; }
-  ul.index li.card {
-    --tint: var(--smoke);
-    position: relative;
-    margin-bottom: 1.3rem;
-    padding: 1.05rem 1.25rem 1.15rem;
-    border-radius: 10px;
-    border: 1px solid rgba(21, 20, 18, 0.4);
-    background:
-      linear-gradient(165deg, rgba(255, 253, 247, 0.5), rgba(255, 253, 247, 0.26) 55%, rgba(255, 253, 247, 0.38)),
-      color-mix(in srgb, var(--tint) 11%, transparent);
-    backdrop-filter: blur(14px) saturate(1.15);
-    -webkit-backdrop-filter: blur(14px) saturate(1.15);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.75),
-      inset 0 -8px 16px color-mix(in srgb, var(--tint) 10%, transparent),
-      0 14px 28px -14px rgba(40, 30, 10, 0.45);
-    transition: transform 160ms ease, box-shadow 160ms ease;
+  li.proj { padding: 1.7rem 0 1.9rem; }
+  /* trace divider: hairline with a via and a test-point ring */
+  li.proj + li.proj { position: relative; }
+  li.proj + li.proj::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 9px;
+    background-image:
+      linear-gradient(var(--hair), var(--hair)),
+      radial-gradient(circle 2px at 50% 4.5px, var(--ink) 99%, transparent),
+      radial-gradient(circle 3.5px at 50% 4.5px, transparent 2px, var(--ink) 2.4px 3.4px, transparent 3.8px);
+    background-repeat: no-repeat;
+    background-size: 100% 1px, 12px 9px, 12px 9px;
+    background-position: 0 4px, 38% 0, calc(100% - 54px) 0;
+    opacity: .75;
   }
-  ul.index li.card:hover {
-    transform: translateY(-2px);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.75),
-      inset 0 -8px 16px color-mix(in srgb, var(--tint) 10%, transparent),
-      0 20px 34px -14px rgba(40, 30, 10, 0.5);
-  }
-  ul.index li.card .num {
-    position: absolute; top: 10px; right: 30px;
+  .row { display: flex; align-items: baseline; gap: .9rem; }
+  .row .num {
     font-family: "Doto", monospace;
-    font-weight: 900;
-    font-size: 11px; letter-spacing: .1em; color: rgba(21, 20, 18, 0.6);
+    font-weight: 900; font-size: 11px;
+    color: var(--muted);
   }
-  .card .screw {
-    position: absolute;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background:
-      linear-gradient(115deg, transparent 43%, rgba(60, 50, 30, 0.75) 43% 57%, transparent 57%),
-      radial-gradient(circle at 35% 30%, #f4efe4, #b3ab99 55%, #837b6a);
-    box-shadow: 0 1px 2px rgba(60, 40, 10, 0.4), inset 0 0 1px rgba(0, 0, 0, 0.45);
-  }
-  .card .screw.tl { top: 9px; left: 9px; }
-  .card .screw.tr { top: 9px; right: 9px; }
-  .card .screw.bl { bottom: 9px; left: 9px; }
-  .card .screw.br { bottom: 9px; right: 9px; }
-
-  ul.index li.card.teal   { --tint: var(--teal); }
-  ul.index li.card.green  { --tint: var(--green); }
-  ul.index li.card.amber  { --tint: var(--amber); }
-  ul.index li.card.orange { --tint: var(--orange); }
-  ul.index li.card.rust   { --tint: var(--rust); }
-  ul.index li.card.brick  { --tint: var(--brick); }
-
-  .row { display: flex; align-items: baseline; gap: .8rem; padding-right: 3rem; }
   .row .name {
     font-family: "Doto", monospace;
-    font-weight: 900; font-size: 1.15rem; letter-spacing: .06em;
+    font-weight: 900; font-size: 1.3rem; letter-spacing: .06em;
     text-transform: uppercase;
     white-space: nowrap;
   }
-  .row .leader { flex: 1; border-bottom: 1px solid rgba(21, 20, 18, 0.35); transform: translateY(-0.32em); }
+  .row .leader { flex: 1; border-bottom: 1px solid rgba(23, 21, 15, 0.35); transform: translateY(-0.35em); }
   .row .tag {
     font-family: "Doto", monospace;
     font-weight: 700;
-    font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
-    padding: 2px 7px;
-    border: 1px solid rgba(21, 20, 18, 0.5);
-    border-radius: 3px;
-    background: rgba(255, 253, 247, 0.35);
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
     white-space: nowrap;
   }
-  .row .tag a { text-decoration: none; }
-  .body { display: flex; gap: 1.1rem; align-items: flex-start; margin-top: .55rem; }
-  .desc { color: var(--muted); font-size: .82rem; flex: 1; }
+  .body { display: flex; gap: 1.4rem; align-items: flex-start; margin-top: .7rem; }
+  .desc { color: var(--muted); font-size: .84rem; flex: 1; max-width: 34rem; }
   .thumb { flex-shrink: 0; line-height: 0; }
   .thumb img {
-    width: 10.5rem; height: auto;
+    width: 9.5rem; height: auto;
     aspect-ratio: 2 / 1;
     object-fit: cover; object-position: top;
-    border-radius: 6px;
-    border: 1px solid rgba(21, 20, 18, 0.45);
-    box-shadow: 0 8px 16px -8px rgba(40, 30, 10, 0.5);
+    border: 1px solid var(--hair);
+    filter: saturate(.92);
   }
   @media (max-width: 520px) {
     .body { flex-direction: column; }
     .thumb img { width: 100%; }
     .meta.tr, .meta.bl { display: none; }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .bg i { animation: none; }
-    ul.index li.card { transition: none; }
-    ul.index li.card:hover { transform: none; }
-  }
-
-  /* ================= devices (from design sample) ================= */
-/* ================= CP-1 style amber disc player ================= */
-  .cp1 {
-    position: relative;
-    width: 330px;
-    height: 372px;
-    border-radius: 20px;
-    background:
-      linear-gradient(158deg,
-        rgba(255, 186, 40, 0.94) 0%,
-        rgba(255, 152, 10, 0.95) 45%,
-        rgba(242, 122, 0, 0.96) 78%,
-        rgba(224, 106, 0, 0.97) 100%);
-    border: 1px solid rgba(255, 224, 150, 0.95);
-    box-shadow:
-      inset 0 2px 0 rgba(255, 244, 210, 0.95),
-      inset 3px 0 5px -2px rgba(255, 236, 180, 0.65),
-      inset -3px -4px 7px -3px rgba(160, 66, 0, 0.8),
-      0 18px 28px -14px rgba(150, 70, 0, 0.6),
-      0 4px 10px -5px rgba(150, 70, 0, 0.45);
-  }
-  .cp1 .rim {
-    position: absolute;
-    inset: 7px;
-    border-radius: 14px;
-    border: 2px solid rgba(255, 232, 170, 0.5);
-    box-shadow: inset 0 0 8px rgba(255, 210, 120, 0.4);
-    pointer-events: none;
-  }
-  /* dense silkscreened circuit network */
-  .cp1 .traces {
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    opacity: .7;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22330%22 height=%22372%22%3E%3Cg fill=%22none%22 stroke=%22%23a04e00%22 stroke-width=%221.4%22%3E%3Cpath d=%22M18 26h36l12 12h30l10 10h22%22/%3E%3Cpath d=%22M18 36h32l12 12h30l10 10h14%22/%3E%3Cpath d=%22M18 46h28l12 12h26%22/%3E%3Cpath d=%22M18 56h24l12 12h18%22/%3E%3Cpath d=%22M312 88v40l-12 12v32%22/%3E%3Cpath d=%22M302 94v36l-12 12v26%22/%3E%3Cpath d=%22M18 298h30l14-14h22%22/%3E%3Cpath d=%22M18 308h34l14-14h18%22/%3E%3Cpath d=%22M18 318h38l14-14h14%22/%3E%3Cpath d=%22M43 230v42h-18%22/%3E%3Cpath d=%22M287 230v48h18%22/%3E%3C/g%3E%3Cg fill=%22none%22 stroke=%22%23a85400%22 stroke-width=%221.3%22%3E%3Cpath d=%22M43 230 A141 141 0 0 0 287 230%22/%3E%3Cpath d=%22M52 255 A148 148 0 0 0 278 255%22/%3E%3C/g%3E%3Cg fill=%22none%22 stroke=%22%23b85e00%22 stroke-width=%221%22%3E%3Crect x=%22246%22 y=%2220%22 width=%2244%22 height=%2220%22 rx=%222%22/%3E%3Crect x=%22120%22 y=%22338%22 width=%2234%22 height=%2214%22 rx=%222%22/%3E%3C/g%3E%3Cg fill=%22%238c4400%22%3E%3Crect x=%22250%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22256.5%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22263%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22269.5%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22276%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22282.5%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22250%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22256.5%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22263%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22269.5%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22276%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22282.5%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22124%22 y=%22332%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22131%22 y=%22332%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22138%22 y=%22332%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22145%22 y=%22332%22 width=%222.5%22 height=%225%22/%3E%3C/g%3E%3Cg fill=%22%23a04e00%22%3E%3Crect x=%2258%22 y=%2286%22 width=%226%22 height=%229%22 rx=%221%22/%3E%3Crect x=%2267%22 y=%2286%22 width=%226%22 height=%229%22 rx=%221%22/%3E%3Crect x=%2284%22 y=%2298%22 width=%226%22 height=%229%22 rx=%221%22/%3E%3Crect x=%2293%22 y=%2298%22 width=%226%22 height=%229%22 rx=%221%22/%3E%3Crect x=%22230%22 y=%2272%22 width=%229%22 height=%226%22 rx=%221%22/%3E%3Crect x=%22230%22 y=%2281%22 width=%229%22 height=%226%22 rx=%221%22/%3E%3Ccircle cx=%22118%22 cy=%2248%22 r=%222.2%22/%3E%3Ccircle cx=%22142%22 cy=%2258%22 r=%222.2%22/%3E%3Ccircle cx=%22102%22 cy=%2258%22 r=%222.2%22/%3E%3Ccircle cx=%22300%22 cy=%22140%22 r=%222.2%22/%3E%3Ccircle cx=%22290%22 cy=%22168%22 r=%222.2%22/%3E%3Ccircle cx=%2284%22 cy=%22284%22 r=%222.2%22/%3E%3Ccircle cx=%2266%22 cy=%22294%22 r=%222.2%22/%3E%3Ccircle cx=%2225%22 cy=%22272%22 r=%222.2%22/%3E%3Ccircle cx=%22305%22 cy=%22278%22 r=%222.2%22/%3E%3C/g%3E%3Cg fill=%22none%22 stroke=%22%23a04e00%22 stroke-width=%221.2%22%3E%3Ccircle cx=%22116%22 cy=%22360%22 r=%223.6%22/%3E%3Ccircle cx=%22212%22 cy=%22360%22 r=%223.6%22/%3E%3C/g%3E%3Cg fill=%22%23a04e00%22%3E%3Ccircle cx=%22116%22 cy=%22360%22 r=%221.4%22/%3E%3Ccircle cx=%22212%22 cy=%22360%22 r=%221.4%22/%3E%3C/g%3E%3Cg fill=%22none%22 stroke=%22%238c4400%22 stroke-width=%221.2%22%3E%3Ccircle cx=%2230%22 cy=%22336%22 r=%223%22/%3E%3Cpath d=%22M25 336h10M30 331v10%22/%3E%3C/g%3E%3Cg fill=%22none%22 stroke=%22%23a85400%22 stroke-width=%220.8%22 opacity=%220.75%22%3E%3Cpath d=%22M252 268l46-46%22/%3E%3Cpath d=%22M252 282l52-52%22/%3E%3Cpath d=%22M252 296l56-56%22/%3E%3Cpath d=%22M258 304l50-50%22/%3E%3Cpath d=%22M272 304l38-38%22/%3E%3Cpath d=%22M286 304l24-24%22/%3E%3C/g%3E%3Cg font-family=%22monospace%22 font-size=%227%22 fill=%22%238c4400%22%3E%3Ctext x=%22248%22 y=%2256%22%3EU1%3C/text%3E%3Ctext x=%2256%22 y=%2282%22%3EC7%3C/text%3E%3Ctext x=%2282%22 y=%2294%22%3ER12%3C/text%3E%3Ctext x=%22224%22 y=%2294%22%3ER4%3C/text%3E%3Ctext x=%22106%22 y=%22372%22%3ETP1%3C/text%3E%3Ctext x=%22202%22 y=%22372%22%3ETP2%3C/text%3E%3Ctext x=%22118%22 y=%22362%22 opacity=%220%22%3E.%3C/text%3E%3Ctext x=%22156%22 y=%22336%22%3EJ2%3C/text%3E%3C/g%3E%3Ctext x=%22196%22 y=%22366%22 font-family=%22monospace%22 font-size=%226.5%22 fill=%22%238c4400%22 opacity=%220.9%22%3ENIXX-CP1 REV.C%3C/text%3E%3C/svg%3E");
-  }
-  /* flex ribbon cable under the shell */
-  .cp1 .ribbon {
-    position: absolute;
-    left: 34px;
-    top: 236px;
-    width: 78px;
-    height: 30px;
-    transform: rotate(-14deg);
-    border-radius: 4px;
-    background:
-      repeating-linear-gradient(90deg,
-        rgba(150, 66, 0, 0.55) 0 3px, rgba(210, 110, 10, 0.35) 3px 6px);
-    box-shadow: inset 0 1px 2px rgba(120, 50, 0, 0.4);
-  }
-  .cp1 .ribbon::after {
-    content: "";
-    position: absolute;
-    right: -12px;
-    top: -2px;
-    width: 14px;
-    height: 34px;
-    border-radius: 3px;
-    background: rgba(120, 52, 0, 0.75);
-  }
-  /* the disc, seen through the shell */
-  .cp1 .disc {
-    position: absolute;
-    top: 26px;
-    left: 50%;
-    width: 268px;
-    height: 268px;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.65);
-    background:
-      /* clear inner ring before the data area */
-      radial-gradient(circle,
-        transparent 0 46px,
-        rgba(255, 176, 60, 0.55) 46px 57px,
-        rgba(255, 255, 255, 0.5) 57px 58.5px,
-        transparent 58.5px 100%),
-      repeating-radial-gradient(circle at 50% 50%,
-        rgba(255, 255, 255, 0.09) 0 1.5px, rgba(0, 0, 0, 0.045) 1.5px 3px),
-      conic-gradient(from 218deg,
-        #c9c9d8 0deg, #eab5f7 30deg, #93d5fa 72deg, #d6d6e6 115deg,
-        #ffd394 160deg, #a6c9fa 205deg, #e4e4ec 245deg, #cca6ee 290deg,
-        #97d5ec 330deg, #c9c9d8 360deg);
-    box-shadow:
-      0 6px 10px -5px rgba(140, 60, 0, 0.55),
-      inset 0 1px 2px rgba(255, 255, 255, 0.95),
-      inset 0 -2px 3px rgba(120, 90, 40, 0.3);
-  }
-  .cp1 .disc::before {
-    content: "";
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 92px; height: 92px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background:
-      radial-gradient(circle,
-        #131318 0 16px,
-        #45454f 16px 18px,
-        #cdcdd3 18px 21px,
-        #8e8e96 21px 22.5px,
-        rgba(255, 200, 120, 0.9) 22.5px 34px,
-        rgba(240, 240, 244, 0.95) 34px 37px,
-        #d6d6dd 37px 42px,
-        #b9b9c1 42px 43.5px,
-        #dfdfe6 43.5px 46px);
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
-  }
-  .cp1 .disc::after {
-    content: "";
-    position: absolute;
-    top: calc(50% - 13px);
-    left: calc(50% - 5px);
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.98), rgba(255,255,255,0) 70%);
-  }
-  /* amber acrylic tint over the disc */
-  .cp1 .disc-tint {
-    position: absolute;
-    top: 26px;
-    left: 50%;
-    width: 268px;
-    height: 268px;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    background: rgba(255, 145, 15, 0.18);
-    pointer-events: none;
-  }
-  /* edge control buttons */
-  .cp1 .btn {
-    position: absolute;
-    top: 34px;
-    width: 30px;
-    height: 12px;
-    border-radius: 3px;
-    background: linear-gradient(180deg, rgba(255, 214, 130, 0.95), rgba(236, 138, 10, 0.95));
-    border: 1px solid rgba(160, 74, 0, 0.6);
-    box-shadow: inset 0 1px 0 rgba(255, 244, 210, 0.9), 0 1px 2px rgba(140, 60, 0, 0.45);
-  }
-  .cp1 .btn::after {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    font-size: 7px;
-    line-height: 1;
-    color: #7c3d00;
-  }
-  .cp1 .btn.play { right: 64px; } .cp1 .btn.play::after { content: "▶"; }
-  .cp1 .btn.stop { right: 28px; } .cp1 .btn.stop::after { content: "■"; }
-  /* speaker perforation patch */
-  .cp1 .grille {
-    position: absolute;
-    left: 28px;
-    bottom: 44px;
-    width: 54px;
-    height: 26px;
-    background: radial-gradient(circle 1.6px at 4px 4px, rgba(120, 52, 0, 0.7) 99%, transparent) 0 0 / 7px 7px repeat;
-  }
-  /* LED dot-matrix status block */
-  .cp1 .led {
-    position: absolute;
-    right: 26px;
-    bottom: 30px;
-    width: 44px;
-    height: 32px;
-    border-radius: 4px;
-    background:
-      radial-gradient(circle 2.1px at 6px 6px, #57b2ff 99%, transparent) 0 0 / 8px 8px repeat,
-      linear-gradient(180deg, #0a1626, #0d1f36);
-    box-shadow:
-      inset 0 1px 3px rgba(0, 0, 0, 0.8),
-      0 0 10px -2px rgba(87, 178, 255, 0.75);
-  }
-  .cp1 .led-label {
-    position: absolute;
-    right: 26px;
-    bottom: 16px;
-    font-size: 6.5px;
-    letter-spacing: .08em;
-    color: #7c3d00;
-    font-weight: 600;
-  }
-  /* silkscreen wordmark + spec block */
-  .cp1 .mark {
-    position: absolute;
-    left: 28px;
-    bottom: 22px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: .3em;
-    color: rgba(116, 56, 0, 0.9);
-  }
-  .cp1 .spec {
-    position: absolute;
-    left: 96px;
-    bottom: 17px;
-    font-size: 6px;
-    line-height: 1.5;
-    letter-spacing: .06em;
-    color: rgba(124, 61, 0, 0.8);
-    text-transform: uppercase;
-  }
-  .cp1 .screw {
-    position: absolute;
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background:
-      linear-gradient(115deg, transparent 43%, rgba(60, 40, 10, 0.8) 43% 57%, transparent 57%),
-      radial-gradient(circle at 35% 30%, #f7f0e2, #b9ae98 55%, #857a68);
-    box-shadow: 0 1px 2px rgba(120, 50, 0, 0.55), inset 0 0 1px rgba(0, 0, 0, 0.5);
-  }
-  .cp1 .screw.tl { top: 13px; left: 13px; }
-  .cp1 .screw.tr { top: 13px; right: 13px; }
-  .cp1 .screw.bl { bottom: 13px; left: 13px; }
-  .cp1 .screw.br { bottom: 13px; right: 13px; }
-  .cp1 .gloss {
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    background:
-      linear-gradient(118deg,
-        rgba(255, 255, 255, 0) 16%,
-        rgba(255, 255, 255, 0.32) 24%,
-        rgba(255, 255, 255, 0.05) 31%,
-        rgba(255, 255, 255, 0) 38%),
-      linear-gradient(118deg,
-        rgba(255, 255, 255, 0) 55%,
-        rgba(255, 255, 255, 0.10) 60%,
-        rgba(255, 255, 255, 0) 66%),
-      linear-gradient(180deg, rgba(255, 240, 200, 0.12), rgba(255, 140, 20, 0.08) 60%);
-    pointer-events: none;
-  }
-
-  /* ================= X25-style frosted green tower ================= */
-  .tower {
-    position: relative;
-    width: 216px;
-    height: 420px;
-    border-radius: 14px 14px 10px 10px;
-    overflow: hidden;
-    background: linear-gradient(165deg,
-      rgba(154, 196, 44, 0.5) 0%,
-      rgba(128, 176, 30, 0.58) 45%,
-      rgba(96, 140, 20, 0.68) 100%);
-    border: 1px solid rgba(220, 250, 150, 0.65);
-    box-shadow:
-      inset 0 2px 0 rgba(236, 255, 180, 0.65),
-      inset 2px 0 6px -2px rgba(230, 255, 170, 0.4),
-      inset -5px -6px 12px -5px rgba(30, 50, 5, 0.75),
-      0 24px 38px -16px rgba(0, 0, 0, 0.85),
-      0 0 34px -10px rgba(154, 200, 40, 0.4);
-  }
-  .tower .internals {
-    position: absolute;
-    inset: 0;
-    filter: blur(1.6px);
-    opacity: .95;
-  }
-  /* big cooling fan */
-  .tower .internals .fan {
-    position: absolute;
-    top: 64px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 158px;
-    height: 158px;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle, rgba(10, 18, 2, 0.95) 0 20px, transparent 20px),
-      repeating-conic-gradient(from 8deg,
-        rgba(16, 28, 3, 0.92) 0deg 20deg,
-        rgba(74, 106, 20, 0.5) 20deg 40deg);
-    border: 7px solid rgba(20, 34, 4, 0.9);
-  }
-  .tower .internals .fan::after {
-    content: "";
-    position: absolute;
-    inset: -13px;
-    border-radius: 50%;
-    border: 2.5px solid rgba(30, 50, 7, 0.75);
-  }
-  /* heatsink fins below the fan */
-  .tower .internals .heatsink {
-    position: absolute;
-    top: 240px; left: 16px; right: 60px; height: 62px;
-    background: repeating-linear-gradient(90deg,
-      rgba(14, 24, 2, 0.95) 0 4px, rgba(96, 132, 26, 0.45) 4px 8px);
-    border-radius: 3px;
-  }
-  /* RAM sticks */
-  .tower .internals .ram {
-    position: absolute;
-    top: 236px; right: 26px; width: 10px; height: 72px;
-    background: rgba(10, 18, 2, 0.92);
-    border-radius: 2px;
-    box-shadow: 14px 0 0 rgba(10, 18, 2, 0.85);
-  }
-  /* capacitor row */
-  .tower .internals .caps {
-    position: absolute;
-    top: 314px; left: 24px; width: 120px; height: 10px;
-    background: radial-gradient(circle 3.5px at 6px 5px, rgba(12, 22, 2, 0.92) 99%, transparent) 0 0 / 15px 10px repeat-x;
-  }
-  /* main board + SoC */
-  .tower .internals .board {
-    position: absolute;
-    top: 330px; left: 18px; right: 34px; height: 46px;
-    background:
-      repeating-linear-gradient(90deg, transparent 0 11px, rgba(120, 162, 38, 0.5) 11px 12px),
-      repeating-linear-gradient(0deg, transparent 0 13px, rgba(110, 150, 34, 0.35) 13px 14px),
-      linear-gradient(180deg, rgba(12, 22, 3, 0.9), rgba(28, 46, 6, 0.85));
-    border-radius: 3px;
-  }
-  .tower .internals .header {
-    position: absolute;
-    top: 352px; right: 44px;
-    width: 30px; height: 8px;
-    background:
-      radial-gradient(circle 1.6px at 3.5px 4px, rgba(210, 232, 150, 0.9) 99%, transparent) 0 0 / 7px 8px repeat-x,
-      rgba(8, 14, 1, 0.95);
-    border-radius: 2px;
-  }
-  .tower .internals .chip {
-    position: absolute;
-    top: 338px; left: 58px; width: 46px; height: 30px;
-    background: rgba(4, 9, 0, 0.98);
-    border-radius: 2px;
-    box-shadow: inset 0 0 0 2px rgba(60, 90, 14, 0.5);
-  }
-  /* drive block */
-  .tower .internals .drive {
-    position: absolute;
-    bottom: 14px; left: 16px; right: 70px; height: 26px;
-    background: linear-gradient(180deg, rgba(18, 30, 4, 0.95), rgba(8, 16, 1, 0.95));
-    border-radius: 3px;
-  }
-  /* wire harness */
-  .tower .internals .wire {
-    position: absolute;
-    border: 3px solid rgba(16, 60, 50, 0.8);
-    border-top: none;
-    border-left: none;
-    border-radius: 0 0 40px 0;
-    width: 52px;
-    height: 70px;
-    top: 300px;
-    right: 14px;
-  }
-  .tower .internals .wire.two {
-    border-color: rgba(90, 70, 8, 0.8);
-    width: 40px;
-    height: 86px;
-    right: 20px;
-    border-radius: 0 0 30px 0;
-  }
-  /* standoff screws on the board */
-  .tower .internals .standoff {
-    position: absolute;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, rgba(220, 240, 170, 0.9), rgba(90, 120, 30, 0.9));
-  }
-  .tower .internals .standoff.a { top: 334px; left: 24px; }
-  .tower .internals .standoff.b { top: 334px; right: 40px; }
-  .tower .internals .standoff.c { top: 368px; left: 24px; }
-  /* frost layer */
-  .tower .frost {
-    position: absolute;
-    inset: 0;
-    box-shadow: inset 0 0 30px rgba(50, 78, 8, 0.42), inset 0 -12px 20px rgba(30, 48, 5, 0.4);
-    background:
-      linear-gradient(160deg, rgba(214, 244, 130, 0.14), rgba(170, 214, 70, 0.09) 55%, rgba(130, 174, 40, 0.12)),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.85 0 0 0 0 1 0 0 0 0 0.55 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23f)'/%3E%3C/svg%3E");
-  }
-  /* glowing vent grid */
-  .tower .vent {
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 52px;
-    background:
-      radial-gradient(circle 2.6px at 5px 5px, rgba(14, 24, 2, 0.97) 99%, transparent) 3px 3px / 9px 9px repeat,
-      radial-gradient(90% 130% at 50% 0%, #e6ff70 0%, #bce840 45%, #86b424 100%);
-    box-shadow:
-      0 5px 14px -3px rgba(190, 240, 70, 0.6),
-      inset 0 -3px 5px rgba(40, 60, 8, 0.6);
-  }
-  /* power button */
-  .tower .power {
-    position: absolute;
-    top: 62px; right: 16px;
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%),
-      radial-gradient(circle, #dcfa74 0 30%, #9cc832 62%, #6f9a1e 100%);
-    box-shadow:
-      0 0 12px -2px rgba(216, 248, 112, 0.95),
-      inset 0 1px 2px rgba(255, 255, 255, 0.75),
-      inset 0 -2px 3px rgba(50, 80, 8, 0.65);
-  }
-  /* front ports + status LED, sharp on the shell */
-  .tower .ports {
-    position: absolute;
-    bottom: 52px; left: 22px;
-    width: 108px; height: 10px;
-    background:
-      linear-gradient(180deg, rgba(10, 18, 2, 0.9), rgba(24, 40, 5, 0.9)) 0 0 / 34px 10px no-repeat,
-      linear-gradient(180deg, rgba(10, 18, 2, 0.9), rgba(24, 40, 5, 0.9)) 44px 0 / 34px 10px no-repeat,
-      linear-gradient(180deg, rgba(10, 18, 2, 0.9), rgba(24, 40, 5, 0.9)) 88px 0 / 20px 10px no-repeat;
-    border-radius: 2px;
-    box-shadow: 0 1px 0 rgba(230, 255, 170, 0.35);
-  }
-  .tower .status {
-    position: absolute;
-    bottom: 53px; right: 24px;
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 38% 32%, #f2ffb8, #c8f04a 60%, #8cb428);
-    box-shadow: 0 0 8px rgba(220, 250, 120, 0.9);
-  }
-  /* disc slot */
-  .tower .slot {
-    position: absolute;
-    bottom: 88px; left: 26px; right: 26px;
-    height: 3px;
-    border-radius: 2px;
-    background: rgba(14, 24, 2, 0.85);
-    box-shadow: 0 1px 0 rgba(230, 255, 170, 0.4), inset 0 1px 1px rgba(0, 0, 0, 0.8);
-  }
-  .tower .etch {
-    position: absolute;
-    bottom: 108px;
-    right: 22px;
-    writing-mode: vertical-rl;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: .34em;
-    color: rgba(32, 56, 7, 0.68);
-    text-shadow: 0 1px 0 rgba(230, 255, 170, 0.4);
-  }
-  .tower .sheen {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(105deg,
-        rgba(255, 255, 255, 0) 6%,
-        rgba(255, 255, 255, 0.28) 10%,
-        rgba(255, 255, 255, 0.05) 15%,
-        rgba(255, 255, 255, 0) 22%),
-      linear-gradient(105deg,
-        rgba(255, 255, 255, 0) 68%,
-        rgba(255, 255, 255, 0.10) 72%,
-        rgba(255, 255, 255, 0) 78%);
-    pointer-events: none;
-  }
 </style>
 </head>
 <body>
 
-<div class="bg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i><i class="b5"></i></div>
-<div class="frame" aria-hidden="true"></div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="silk" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
+<div class="frame" aria-hidden="true"></div>
+<span class="fid tl" aria-hidden="true"></span><span class="fid tr" aria-hidden="true"></span>
+<span class="fid bl" aria-hidden="true"></span><span class="fid br" aria-hidden="true"></span>
+
 <div class="meta tl"><b>nixx</b><br>Personal index</div>
 <div class="meta tr">Hand-built software<br>6 live · 2 in dev</div>
 <div class="meta bl">Built by Dillon</div>
 <div class="meta br"><a href="https://github.com/dillonco">github.com/dillonco</a></div>
+
+<nav class="rail" aria-label="Project index">
+  <a href="#p01">01</a><a href="#p02">02</a><a href="#p03">03</a><a href="#p04">04</a>
+  <a href="#p05">05</a><a href="#p06">06</a><a href="#p07">07</a><a href="#p08">08</a>
+</nav>
 
 <div class="page">
 
@@ -748,135 +228,165 @@
     <div><h3>Role</h3><p>Developer · Builder · Product manager</p></div>
     <div><h3>Status</h3><p>6 live · 2 in development</p></div>
   </div>
-
-  <div class="shelf">
-    <figure class="dev player">
-      <div class="scale-wrap">
-<div class="cp1">
-        <div class="traces"></div>
-        <div class="ribbon"></div>
-        <div class="rim"></div>
-        <div class="disc"></div>
-        <div class="disc-tint"></div>
-        <span class="btn play"></span><span class="btn stop"></span>
-        <div class="grille"></div>
-        <div class="led"></div>
-        <div class="led-label">CHECK CURRENT STATUS</div>
-        <div class="mark">NIXX</div>
-        <div class="spec">Instant disc audio · model NIXX-CP1<br>DC 14.4V ⎓ 0.8A · made on earth</div>
-        <span class="screw tl"></span><span class="screw tr"></span>
-        <span class="screw bl"></span><span class="screw br"></span>
-        <div class="gloss"></div>
-      </div>
-      </div>
-      <div class="dev-shadow"></div>
-      <figcaption>NIXX-CP1 · Amber acrylic</figcaption>
-    </figure>
-    <figure class="dev console">
-      <div class="scale-wrap">
-<div class="tower">
-        <div class="internals">
-          <div class="fan"></div>
-          <div class="heatsink"></div>
-          <div class="ram"></div>
-          <div class="caps"></div>
-          <div class="board"></div>
-          <div class="chip"></div>
-          <div class="header"></div>
-          <div class="wire"></div>
-          <div class="wire two"></div>
-          <div class="standoff a"></div><div class="standoff b"></div><div class="standoff c"></div>
-          <div class="drive"></div>
-        </div>
-        <div class="frost"></div>
-        <div class="vent"></div>
-        <div class="power"></div>
-        <div class="slot"></div>
-        <div class="ports"></div>
-        <div class="status"></div>
-        <div class="etch">NIXX 25</div>
-        <div class="sheen"></div>
-      </div>
-      </div>
-      <div class="dev-shadow"></div>
-      <figcaption>NIXX-25 · Frosted green</figcaption>
-    </figure>
-  </div>
 </header>
 
 <main>
   <h2>Tools</h2>
   <ul class="index">
-    <li class="card teal">
-      <span class="num">01</span>
-      <div class="row"><a class="name" href="https://notes.nixx.co">Nest</a><span class="leader"></span><span class="tag"><a href="https://notes.nixx.co">notes.nixx.co</a></span></div>
+    <li class="proj" id="p01">
+      <div class="row"><span class="num">01</span><a class="name" href="https://notes.nixx.co">Nest</a><span class="leader"></span><span class="tag"><a href="https://notes.nixx.co">notes.nixx.co</a></span></div>
       <div class="body">
         <p class="desc">An outliner built for one. Fast, keyboard-first, and text-only — infinite nesting, full-text search, backlinks, and offline support. No AI, no collaboration, just a very fast outline.</p>
         <a class="thumb" href="https://notes.nixx.co" tabindex="-1" aria-hidden="true"><img src="img/nest.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
-      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li class="card">
-      <span class="num">02</span>
-      <div class="row"><span class="name">Meetings</span><span class="leader"></span><span class="tag">in dev</span></div>
+    <li class="proj" id="p02">
+      <div class="row"><span class="num">02</span><span class="name">Meetings</span><span class="leader"></span><span class="tag">in dev</span></div>
       <div class="body"><p class="desc">Agendas, notes, and follow-ups in one place, so meetings end with decisions.</p></div>
-      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li class="card green">
-      <span class="num">03</span>
-      <div class="row"><a class="name" href="https://github.com/dillonco/gitc">gitc</a><span class="leader"></span><span class="tag"><a href="https://github.com/dillonco/gitc">open source</a></span></div>
+    <li class="proj" id="p03">
+      <div class="row"><span class="num">03</span><a class="name" href="https://github.com/dillonco/gitc">gitc</a><span class="leader"></span><span class="tag"><a href="https://github.com/dillonco/gitc">open source</a></span></div>
       <div class="body"><p class="desc">A command-line companion that smooths out everyday git workflows.</p></div>
-      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li class="card">
-      <span class="num">04</span>
-      <div class="row"><span class="name">CompanyOS</span><span class="leader"></span><span class="tag">in dev</span></div>
+    <li class="proj" id="p04">
+      <div class="row"><span class="num">04</span><span class="name">CompanyOS</span><span class="leader"></span><span class="tag">in dev</span></div>
       <div class="body"><p class="desc">An operating system for running a company: people, process, and knowledge together.</p></div>
-      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li class="card amber">
-      <span class="num">05</span>
-      <div class="row"><a class="name" href="https://kiteware.com">Kiteware</a><span class="leader"></span><span class="tag"><a href="https://kiteware.com">kiteware.com</a></span></div>
+    <li class="proj" id="p05">
+      <div class="row"><span class="num">05</span><a class="name" href="https://kiteware.com">Kiteware</a><span class="leader"></span><span class="tag"><a href="https://kiteware.com">kiteware.com</a></span></div>
       <div class="body">
         <p class="desc">Ship infrastructure, not YAML. Managed PostgreSQL, caches, S3-compatible storage, and git-push container deploys — provisioned in seconds from a single dashboard.</p>
         <a class="thumb" href="https://kiteware.com" tabindex="-1" aria-hidden="true"><img src="img/kiteware.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
-      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
   </ul>
 
   <h2>Games</h2>
   <ul class="index">
-    <li class="card orange">
-      <span class="num">06</span>
-      <div class="row"><a class="name" href="https://costars.ai">Costars</a><span class="leader"></span><span class="tag"><a href="https://costars.ai">costars.ai</a></span></div>
+    <li class="proj" id="p06">
+      <div class="row"><span class="num">06</span><a class="name" href="https://costars.ai">Costars</a><span class="leader"></span><span class="tag"><a href="https://costars.ai">costars.ai</a></span></div>
       <div class="body">
         <p class="desc">The Hollywood connection game, inspired by Six Degrees of Kevin Bacon. Find the shortest path between two actors through the movies they share — or try to beat the AI's path.</p>
         <a class="thumb" href="https://costars.ai" tabindex="-1" aria-hidden="true"><img src="img/costars.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
-      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li class="card rust">
-      <span class="num">07</span>
-      <div class="row"><a class="name" href="https://stackz.ca">Stackz</a><span class="leader"></span><span class="tag"><a href="https://stackz.ca">stackz.ca</a></span></div>
+    <li class="proj" id="p07">
+      <div class="row"><span class="num">07</span><a class="name" href="https://stackz.ca">Stackz</a><span class="leader"></span><span class="tag"><a href="https://stackz.ca">stackz.ca</a></span></div>
       <div class="body">
         <p class="desc">Stake. Slam. Take it all. A physics-driven slam game for the browser — bet ten discs into a shared stack, launch the slammer, and keep everything that lands face-up.</p>
         <a class="thumb" href="https://stackz.ca" tabindex="-1" aria-hidden="true"><img src="img/stackz.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
-      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li class="card brick">
-      <span class="num">08</span>
-      <div class="row"><a class="name" href="https://robertaroyale.com">Roberta Royale</a><span class="leader"></span><span class="tag"><a href="https://robertaroyale.com">robertaroyale.com</a></span></div>
+    <li class="proj" id="p08">
+      <div class="row"><span class="num">08</span><a class="name" href="https://robertaroyale.com">Roberta Royale</a><span class="leader"></span><span class="tag"><a href="https://robertaroyale.com">robertaroyale.com</a></span></div>
       <div class="body">
         <p class="desc">Free online Euchre, no account needed. Practice against AI, invite friends to a private game, or jump into a quick match — with an interactive tutorial that teaches the game in 20 minutes.</p>
         <a class="thumb" href="https://robertaroyale.com" tabindex="-1" aria-hidden="true"><img src="img/roberta-royale.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
-      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
   </ul>
 </main>
 
 </div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('gl');
+  const gl = canvas.getContext('webgl', { antialias: false });
+  if (!gl) { canvas.style.display = 'none'; return; }
+
+  const vsrc = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  const fsrc = `
+precision highp float;
+uniform vec2 R;
+uniform float T;
+
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
+float noise(vec2 p){
+  vec2 i = floor(p), f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash(i), hash(i + vec2(1.,0.)), u.x),
+             mix(hash(i + vec2(0.,1.)), hash(i + vec2(1.,1.)), u.x), u.y);
+}
+float fbm(vec2 p){
+  float v = 0.0, a = 0.5;
+  mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 5; i++) {
+    v += a * noise(p);
+    p = rot * p * 2.03;
+    a *= 0.5;
+  }
+  return v;
+}
+
+void main(){
+  vec2 uv = gl_FragCoord.xy / R;
+  vec2 p = vec2(uv.x * R.x / R.y, uv.y) * 1.35;
+  float t = T * 0.014;
+
+  vec2 q = vec2(fbm(p + t * 0.55),
+                fbm(p + vec2(5.2, 1.3) - t * 0.4));
+  vec2 r = vec2(fbm(p + 3.2 * q + vec2(1.7, 9.2) + t * 0.32),
+                fbm(p + 3.2 * q + vec2(8.3, 2.8) - t * 0.26));
+  float f = fbm(p + 3.0 * r);
+
+  vec3 SLATE  = vec3(0.337, 0.459, 0.557);
+  vec3 STEEL  = vec3(0.557, 0.639, 0.694);
+  vec3 TEAL   = vec3(0.322, 0.565, 0.510);
+  vec3 CREAM  = vec3(0.937, 0.865, 0.678);
+  vec3 ORANGE = vec3(0.902, 0.463, 0.220);
+
+  vec3 col = mix(SLATE, CREAM, smoothstep(0.28, 0.72, f));
+  col = mix(col, STEEL, smoothstep(0.45, 0.85, q.x) * 0.55);
+  col = mix(col, TEAL, smoothstep(0.58, 0.82, q.y) * 0.8);
+  col = mix(col, ORANGE, smoothstep(0.52, 0.82, r.x));
+  col = mix(col, SLATE, smoothstep(0.35, 1.15, uv.x * 0.9 + r.y * 0.5 - 0.25) * 0.5);
+  col *= 0.96 + 0.08 * fbm(p * 4.0);
+
+  gl_FragColor = vec4(col, 1.0);
+}`;
+
+  function sh(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER, vsrc));
+  gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fsrc));
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { canvas.style.display = 'none'; return; }
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'a');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  const uR = gl.getUniformLocation(prog, 'R');
+  const uT = gl.getUniformLocation(prog, 'T');
+
+  function resize() {
+    const s = 0.4; /* low-res render upscaled — matches the reference's soft focus */
+    canvas.width = Math.max(2, Math.floor(innerWidth * s));
+    canvas.height = Math.max(2, Math.floor(innerHeight * s));
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform2f(uR, canvas.width, canvas.height);
+  }
+  addEventListener('resize', resize);
+  resize();
+
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function frame(ms) {
+    gl.uniform1f(uT, ms * 0.001);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (!still) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
 </body>
 </html>
