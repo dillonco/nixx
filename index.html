@@ -7,38 +7,37 @@
 <meta name="description" content="An index of software built by Dillon: tools like Nest, Meetings, gitc, CompanyOS, and Kiteware, and web games like Costars, Stackz, and Roberta Royale.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Michroma&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #22333f;
-    --muted: #4a5d6b;
-    --link: #006b8f;
-    --visited: #6b4fa0;
-    --panel-line: rgba(255, 255, 255, 0.75);
-    --bondi: #0095b6;
-    --grape: #7b68c8;
-    --lime: #7fae1b;
-    --tangerine: #e88a1a;
-    --strawberry: #e04a90;
-    --ruby: #b83a3a;
-    --frost: #8fa5b5;
+    --bg: #0e0b20;
+    --ink: #eae6ff;
+    --muted: #b0aacd;
+    --link: #5ce8f5;
+    --visited: #c09aff;
+    --cyan: #22c7e6;      /* ice-clear shell */
+    --grape: #9b6bff;     /* atomic purple GBC */
+    --xgreen: #55d364;    /* crystal Xbox green */
+    --tangerine: #ff9e4a;
+    --magenta: #ff3fa4;
+    --ruby: #ff5470;
+    --smoke: #6f7a99;     /* smoke-black clear shell */
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     color: var(--ink);
-    font: 15px/1.6 Verdana, Tahoma, "DejaVu Sans", sans-serif;
+    font: 15px/1.65 "IBM Plex Sans", Verdana, "DejaVu Sans", sans-serif;
     min-height: 100vh;
-    background-color: #c9d9e8;
+    background-color: var(--bg);
     background-image:
-      radial-gradient(50rem 34rem at 15% -5%, rgba(160, 232, 255, 0.65), transparent 60%),
-      radial-gradient(44rem 30rem at 90% 10%, rgba(201, 182, 255, 0.55), transparent 60%),
-      radial-gradient(40rem 30rem at 70% 95%, rgba(255, 190, 226, 0.4), transparent 60%),
-      radial-gradient(36rem 26rem at 5% 80%, rgba(190, 255, 205, 0.35), transparent 60%),
-      linear-gradient(165deg, #eef5fa 0%, #c8dcec 45%, #b9c8e6 75%, #dce8f2 100%);
+      radial-gradient(48rem 32rem at 12% -8%, rgba(255, 63, 164, 0.16), transparent 60%),
+      radial-gradient(44rem 30rem at 95% 12%, rgba(34, 199, 230, 0.14), transparent 60%),
+      radial-gradient(40rem 32rem at 75% 100%, rgba(155, 107, 255, 0.14), transparent 60%),
+      linear-gradient(170deg, #131031 0%, #0e0b20 45%, #120c26 100%);
     background-attachment: fixed;
   }
-  /* dither field — two offset dot grids, like a Bayer pattern */
+  /* dither field — offset dot grids in neon dust */
   body::before {
     content: "";
     position: fixed;
@@ -46,8 +45,8 @@
     z-index: 0;
     pointer-events: none;
     background-image:
-      radial-gradient(circle, rgba(255, 255, 255, 0.55) 1px, transparent 1.5px),
-      radial-gradient(circle, rgba(84, 120, 150, 0.18) 1px, transparent 1.5px);
+      radial-gradient(circle, rgba(92, 232, 245, 0.10) 1px, transparent 1.5px),
+      radial-gradient(circle, rgba(255, 63, 164, 0.07) 1px, transparent 1.5px);
     background-size: 6px 6px, 6px 6px;
     background-position: 0 0, 3px 3px;
   }
@@ -62,7 +61,7 @@
 
   a { color: var(--link); }
   a:visited { color: var(--visited); }
-  a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 4px; }
+  a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 2px; }
 
   /* ---- LCD pills ---- */
   .lcd {
@@ -72,30 +71,43 @@
     line-height: 1.2;
     letter-spacing: 0.08em;
     padding: 0.15rem 0.6rem;
-    border-radius: 6px;
-    background: linear-gradient(180deg, #0a2033, #123a52 55%, #0a2033);
+    border-radius: 3px;
+    background: linear-gradient(180deg, #060d18, #0d2233 55%, #060d18);
     color: #6fe3ff;
-    text-shadow: 0 0 6px rgba(111, 227, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 255, 255, 0.6);
+    text-shadow: 0 0 7px rgba(111, 227, 255, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.75), 0 0 10px -3px rgba(111, 227, 255, 0.35);
     white-space: nowrap;
   }
   .lcd a { color: inherit; text-decoration: none; }
-  .lcd-green { background: linear-gradient(180deg, #07230f, #144a23 55%, #07230f); color: #8df78d; text-shadow: 0 0 6px rgba(141, 247, 141, 0.6); }
-  .lcd-amber { background: linear-gradient(180deg, #2a1c06, #533a10 55%, #2a1c06); color: #ffd27a; text-shadow: 0 0 6px rgba(255, 210, 122, 0.55); }
+  .lcd-green {
+    background: linear-gradient(180deg, #04150a, #0e3319 55%, #04150a);
+    color: #7dfb92;
+    text-shadow: 0 0 7px rgba(125, 251, 146, 0.6);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.75), 0 0 10px -3px rgba(125, 251, 146, 0.35);
+  }
+  .lcd-amber {
+    background: linear-gradient(180deg, #180d02, #3d2708 55%, #180d02);
+    color: #ffc46b;
+    text-shadow: 0 0 7px rgba(255, 196, 107, 0.55);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.75), 0 0 10px -3px rgba(255, 196, 107, 0.3);
+  }
 
   /* ---- header ---- */
   header { margin-bottom: 3rem; }
   .wordmark {
-    font-family: "Michroma", "Arial Black", sans-serif;
-    font-size: clamp(3rem, 12vw, 4.75rem);
-    letter-spacing: 0.04em;
-    line-height: 1.1;
-    background: linear-gradient(180deg, #ffffff 8%, #c2d3e2 38%, #5b7a94 50%, #f2f8fc 54%, #7f99af 90%);
+    width: fit-content;
+    font-family: "Chakra Petch", "Arial Black", sans-serif;
+    font-weight: 700;
+    font-size: clamp(3.2rem, 13vw, 5.25rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.05;
+    background: linear-gradient(100deg, #5ce8f5 5%, #8f8dff 45%, #ff3fa4 95%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    filter: drop-shadow(0 2px 1px rgba(255, 255, 255, 0.9)) drop-shadow(0 4px 10px rgba(60, 90, 120, 0.35));
+    filter: drop-shadow(0 0 18px rgba(143, 141, 255, 0.35));
   }
   header .intro {
     margin-top: 1rem;
@@ -106,13 +118,12 @@
 
   /* ---- sections ---- */
   h2 {
-    font-family: "Michroma", "Arial Black", sans-serif;
+    font-family: "Chakra Petch", sans-serif;
+    font-weight: 600;
     font-size: 0.85rem;
-    font-weight: 400;
     letter-spacing: 0.35em;
     text-transform: uppercase;
-    color: #51687a;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+    color: #8d86b8;
     margin: 3rem 0 1.25rem;
     display: flex;
     align-items: center;
@@ -121,52 +132,59 @@
   h2::after {
     content: "";
     flex: 1;
-    border-bottom: 2px dotted rgba(81, 104, 122, 0.5);
+    border-bottom: 2px dotted rgba(141, 134, 184, 0.45);
   }
 
-  /* ---- translucent plastic cards ---- */
+  /* ---- smoke-translucent shells ---- */
   ul.index { list-style: none; }
   ul.index li.card {
-    --tint: var(--frost);
+    --tint: var(--smoke);
     position: relative;
     margin-bottom: 1.4rem;
     padding: 1.1rem 1.3rem 1.2rem;
-    border-radius: 20px;
-    border: 1px solid color-mix(in srgb, var(--tint) 35%, rgba(255, 255, 255, 0.85));
+    border-radius: 8px;
+    border: 1px solid color-mix(in srgb, var(--tint) 50%, rgba(255, 255, 255, 0.16));
     background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.16) 55%, rgba(255, 255, 255, 0.3)),
-      color-mix(in srgb, var(--tint) 30%, transparent);
+      /* corner screws */
+      radial-gradient(circle 2px at 10px 10px, rgba(255, 255, 255, 0.28) 99%, transparent),
+      radial-gradient(circle 2px at calc(100% - 10px) 10px, rgba(255, 255, 255, 0.28) 99%, transparent),
+      radial-gradient(circle 2px at 10px calc(100% - 10px), rgba(255, 255, 255, 0.28) 99%, transparent),
+      radial-gradient(circle 2px at calc(100% - 10px) calc(100% - 10px), rgba(255, 255, 255, 0.28) 99%, transparent),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.05)),
+      color-mix(in srgb, var(--tint) 13%, rgba(18, 14, 40, 0.6));
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.95),
-      inset 0 -10px 18px color-mix(in srgb, var(--tint) 12%, transparent),
-      0 12px 28px -8px color-mix(in srgb, var(--tint) 45%, rgba(50, 80, 110, 0.35));
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -12px 22px color-mix(in srgb, var(--tint) 14%, transparent),
+      0 10px 30px -10px color-mix(in srgb, var(--tint) 55%, rgba(0, 0, 0, 0.7)),
+      0 0 22px -8px color-mix(in srgb, var(--tint) 60%, transparent);
     transition: transform 180ms ease, box-shadow 180ms ease;
   }
-  /* molded gloss highlight across the top of the shell */
+  /* molded gloss across the top of the shell */
   ul.index li.card::before {
     content: "";
     position: absolute;
-    inset: 3px 8px auto 8px;
-    height: 42%;
-    border-radius: 16px 16px 40% 40%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+    inset: 2px 6px auto 6px;
+    height: 38%;
+    border-radius: 6px 6px 30% 30%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0));
     pointer-events: none;
   }
   ul.index li.card:hover {
     transform: translateY(-3px);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.95),
-      inset 0 -10px 18px color-mix(in srgb, var(--tint) 12%, transparent),
-      0 18px 34px -8px color-mix(in srgb, var(--tint) 55%, rgba(50, 80, 110, 0.4));
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -12px 22px color-mix(in srgb, var(--tint) 14%, transparent),
+      0 16px 36px -10px color-mix(in srgb, var(--tint) 65%, rgba(0, 0, 0, 0.7)),
+      0 0 30px -8px color-mix(in srgb, var(--tint) 75%, transparent);
   }
 
-  ul.index li.card.bondi      { --tint: var(--bondi); }
+  ul.index li.card.ice        { --tint: var(--cyan); }
   ul.index li.card.grape      { --tint: var(--grape); }
-  ul.index li.card.lime       { --tint: var(--lime); }
+  ul.index li.card.xgreen     { --tint: var(--xgreen); }
   ul.index li.card.tangerine  { --tint: var(--tangerine); }
-  ul.index li.card.strawberry { --tint: var(--strawberry); }
+  ul.index li.card.magenta    { --tint: var(--magenta); }
   ul.index li.card.ruby       { --tint: var(--ruby); }
 
   .row {
@@ -176,17 +194,17 @@
     gap: 0.7rem;
   }
   .row .name {
-    font-family: "Michroma", "Arial Black", sans-serif;
-    font-size: 1rem;
-    letter-spacing: 0.03em;
+    font-family: "Chakra Petch", sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
     white-space: nowrap;
     color: var(--ink);
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   }
   a.name { text-decoration-thickness: 1px; text-underline-offset: 4px; }
   .row .leader {
     flex: 1;
-    border-bottom: 2px dotted color-mix(in srgb, var(--tint) 55%, #51687a);
+    border-bottom: 2px dotted color-mix(in srgb, var(--tint) 60%, rgba(255, 255, 255, 0.3));
     transform: translateY(-0.35em);
   }
 
@@ -197,7 +215,7 @@
     align-items: flex-start;
     margin-top: 0.6rem;
   }
-  .desc { color: var(--muted); font-size: 0.82rem; flex: 1; }
+  .desc { color: var(--muted); font-size: 0.85rem; flex: 1; }
   .thumb { flex-shrink: 0; line-height: 0; }
   .thumb img {
     width: 10.5rem;
@@ -205,11 +223,9 @@
     aspect-ratio: 2 / 1;
     object-fit: cover;
     object-position: top;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.85);
-    box-shadow:
-      0 6px 14px -4px color-mix(in srgb, var(--tint) 55%, rgba(50, 80, 110, 0.4)),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    border: 1px solid color-mix(in srgb, var(--tint) 50%, rgba(255, 255, 255, 0.25));
+    box-shadow: 0 0 16px -5px color-mix(in srgb, var(--tint) 65%, transparent);
   }
   @media (max-width: 500px) {
     .body { flex-direction: column; }
@@ -220,14 +236,16 @@
   footer {
     margin-top: 3.5rem;
     padding: 0.9rem 1.3rem;
-    border-radius: 999px;
-    border: 1px solid var(--panel-line);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.25));
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
+      rgba(18, 14, 40, 0.6);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 10px 22px -8px rgba(50, 80, 110, 0.4);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 24px -10px rgba(0, 0, 0, 0.7);
     color: var(--muted);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -257,7 +275,7 @@
 <main>
   <h2>Tools</h2>
   <ul class="index">
-    <li class="card bondi">
+    <li class="card ice">
       <div class="row"><a class="name" href="https://notes.nixx.co">Nest</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://notes.nixx.co">notes.nixx.co</a></span></div>
       <div class="body">
         <p class="desc">An outliner built for one. Fast, keyboard-first, and text-only — infinite nesting, full-text search, backlinks, and offline support. No AI, no collaboration, just a very fast outline.</p>
@@ -270,7 +288,7 @@
         <p class="desc">Agendas, notes, and follow-ups in one place, so meetings end with decisions.</p>
       </div>
     </li>
-    <li class="card lime">
+    <li class="card xgreen">
       <div class="row"><a class="name" href="https://github.com/dillonco/gitc">gitc</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://github.com/dillonco/gitc">OPEN SOURCE</a></span></div>
       <div class="body">
         <p class="desc">A command-line companion that smooths out everyday git workflows.</p>
@@ -300,7 +318,7 @@
         <a class="thumb" href="https://costars.ai" tabindex="-1" aria-hidden="true"><img src="img/costars.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
     </li>
-    <li class="card strawberry">
+    <li class="card magenta">
       <div class="row"><a class="name" href="https://stackz.ca">Stackz</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://stackz.ca">stackz.ca</a></span></div>
       <div class="body">
         <p class="desc">Stake. Slam. Take it all. A physics-driven slam game for the browser — bet ten discs into a shared stack, launch the slammer, and keep everything that lands face-up.</p>
