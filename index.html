@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>nixx — tools and games by Dillon</title>
-<meta name="description" content="An index of software built by Dillon: productivity tools like Nest, Meetings, gitc, CompanyOS, and Kiteware, and web games like Costars, Stackz, and Roberta Royale.">
+<meta name="description" content="An index of software built by Dillon: tools like Nest, Meetings, gitc, CompanyOS, and Kiteware, and web games like Costars, Stackz, and Roberta Royale.">
 <style>
   :root {
     --ink: #1a1a1a;
@@ -58,7 +58,7 @@
   }
 
   ul.index { list-style: none; }
-  ul.index li { margin-bottom: 1.1rem; }
+  ul.index li { margin-bottom: 1.75rem; }
 
   .row {
     display: flex;
@@ -76,10 +76,34 @@
     font-size: 0.8rem;
     white-space: nowrap;
   }
+
+  .body {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-top: 0.35rem;
+  }
   .desc {
     color: var(--muted);
     font-size: 0.9rem;
-    max-width: 32rem;
+    flex: 1;
+  }
+  .thumb {
+    flex-shrink: 0;
+    line-height: 0;
+  }
+  .thumb img {
+    width: 10.5rem;
+    height: auto;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    object-position: top;
+    border: 1px solid var(--dot);
+    border-radius: 4px;
+  }
+  @media (max-width: 480px) {
+    .body { flex-direction: column; }
+    .thumb img { width: 100%; }
   }
 
   footer {
@@ -106,40 +130,61 @@
   <h2>Tools</h2>
   <ul class="index">
     <li>
-      <div class="row"><span class="name">Nest</span><span class="leader"></span><span class="tag">soon</span></div>
-      <p class="desc">Notes that stay organized. Capture fast, find it later.</p>
+      <div class="row"><a class="name" href="https://notes.nixx.co">Nest</a><span class="leader"></span><span class="tag">notes.nixx.co</span></div>
+      <div class="body">
+        <p class="desc">An outliner built for one. Fast, keyboard-first, and text-only — infinite nesting, full-text search, backlinks, and offline support. No AI, no collaboration, just a very fast outline.</p>
+        <a class="thumb" href="https://notes.nixx.co" tabindex="-1" aria-hidden="true"><img src="img/nest.jpg" alt="" width="1568" height="744" loading="lazy"></a>
+      </div>
     </li>
     <li>
       <div class="row"><span class="name">Meetings</span><span class="leader"></span><span class="tag">soon</span></div>
-      <p class="desc">Agendas, notes, and follow-ups in one place, so meetings end with decisions.</p>
+      <div class="body">
+        <p class="desc">Agendas, notes, and follow-ups in one place, so meetings end with decisions.</p>
+      </div>
     </li>
     <li>
       <div class="row"><a class="name" href="https://github.com/dillonco/gitc">gitc</a><span class="leader"></span><span class="tag">open source</span></div>
-      <p class="desc">A command-line companion that smooths out everyday git workflows.</p>
+      <div class="body">
+        <p class="desc">A command-line companion that smooths out everyday git workflows.</p>
+      </div>
     </li>
     <li>
       <div class="row"><span class="name">CompanyOS</span><span class="leader"></span><span class="tag">soon</span></div>
-      <p class="desc">An operating system for running a company: people, process, and knowledge together.</p>
+      <div class="body">
+        <p class="desc">An operating system for running a company: people, process, and knowledge together.</p>
+      </div>
     </li>
     <li>
-      <div class="row"><span class="name">Kiteware</span><span class="leader"></span><span class="tag">soon</span></div>
-      <p class="desc">Privacy-first software that keeps your data yours.</p>
+      <div class="row"><a class="name" href="https://kiteware.com">Kiteware</a><span class="leader"></span><span class="tag">kiteware.com</span></div>
+      <div class="body">
+        <p class="desc">Ship infrastructure, not YAML. Managed PostgreSQL, caches, S3-compatible storage, and git-push container deploys — provisioned in seconds from a single dashboard.</p>
+        <a class="thumb" href="https://kiteware.com" tabindex="-1" aria-hidden="true"><img src="img/kiteware.jpg" alt="" width="1568" height="744" loading="lazy"></a>
+      </div>
     </li>
   </ul>
 
   <h2>Games</h2>
   <ul class="index">
     <li>
-      <div class="row"><span class="name">Costars</span><span class="leader"></span><span class="tag">soon</span></div>
-      <p class="desc">Link two actors through the movies they share. Fewer hops, better score.</p>
+      <div class="row"><a class="name" href="https://costars.ai">Costars</a><span class="leader"></span><span class="tag">costars.ai</span></div>
+      <div class="body">
+        <p class="desc">The Hollywood connection game, inspired by Six Degrees of Kevin Bacon. Find the shortest path between two actors through the movies they share — or try to beat the AI's path.</p>
+        <a class="thumb" href="https://costars.ai" tabindex="-1" aria-hidden="true"><img src="img/costars.jpg" alt="" width="1568" height="744" loading="lazy"></a>
+      </div>
     </li>
     <li>
-      <div class="row"><span class="name">Stackz</span><span class="leader"></span><span class="tag">soon</span></div>
-      <p class="desc">A quick stacking game that is easy to start and hard to put down.</p>
+      <div class="row"><a class="name" href="https://stackz.ca">Stackz</a><span class="leader"></span><span class="tag">stackz.ca</span></div>
+      <div class="body">
+        <p class="desc">Stake. Slam. Take it all. A physics-driven slam game for the browser — bet ten discs into a shared stack, launch the slammer, and keep everything that lands face-up.</p>
+        <a class="thumb" href="https://stackz.ca" tabindex="-1" aria-hidden="true"><img src="img/stackz.jpg" alt="" width="1568" height="744" loading="lazy"></a>
+      </div>
     </li>
     <li>
-      <div class="row"><span class="name">Roberta Royale</span><span class="leader"></span><span class="tag">soon</span></div>
-      <p class="desc">A lighthearted battle royale you can play in the browser with friends.</p>
+      <div class="row"><a class="name" href="https://robertaroyale.com">Roberta Royale</a><span class="leader"></span><span class="tag">robertaroyale.com</span></div>
+      <div class="body">
+        <p class="desc">Free online Euchre, no account needed. Practice against AI, invite friends to a private game, or jump into a quick match — with an interactive tutorial that teaches the game in 20 minutes.</p>
+        <a class="thumb" href="https://robertaroyale.com" tabindex="-1" aria-hidden="true"><img src="img/roberta-royale.jpg" alt="" width="1568" height="744" loading="lazy"></a>
+      </div>
     </li>
   </ul>
 </main>
