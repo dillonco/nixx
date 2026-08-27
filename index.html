@@ -119,33 +119,23 @@
     max-width: 54rem;
     margin: 3.5rem auto 4rem;
     padding: 2.5rem 2.6rem 3.1rem;
-    border: 1px solid rgba(255, 250, 235, 0.92);
-    background: linear-gradient(165deg, rgba(246, 240, 222, 0.52), rgba(246, 240, 222, 0.32) 55%, rgba(246, 240, 222, 0.44));
+    border: 2px solid transparent;
+    background:
+      linear-gradient(165deg, rgba(246, 240, 222, 0.52), rgba(246, 240, 222, 0.32) 55%, rgba(246, 240, 222, 0.44)) padding-box,
+      linear-gradient(110deg, #e0703a, #f2ddab 22%, #4e8f86 48%, #56789b 74%, #e0703a 100%) border-box;
+    background-size: 100% 100%, 300% 300%;
+    animation: flow 9s ease-in-out infinite;
     backdrop-filter: blur(14px) saturate(1.1);
     -webkit-backdrop-filter: blur(14px) saturate(1.1);
     box-shadow:
       inset 0 0 14px rgba(255, 244, 210, 0.4),
       0 26px 48px -22px rgba(35, 28, 12, 0.55);
   }
-  .page::before {
-    content: "";
-    position: absolute; inset: 12px;
-    border: 2px solid rgba(255, 250, 235, 0.55);
-    box-shadow: inset 0 0 10px rgba(255, 240, 200, 0.35);
-    pointer-events: none;
+  @keyframes flow {
+    0%   { background-position: 0 0, 0% 50%; }
+    50%  { background-position: 0 0, 100% 50%; }
+    100% { background-position: 0 0, 0% 50%; }
   }
-  /* molded gloss sweep across the shell, like the disc player */
-  .page::after {
-    content: "";
-    position: absolute; inset: 0;
-    background: linear-gradient(118deg,
-      rgba(255, 255, 255, 0) 18%,
-      rgba(255, 255, 255, 0.17) 25%,
-      rgba(255, 255, 255, 0.03) 32%,
-      rgba(255, 255, 255, 0) 40%);
-    pointer-events: none;
-  }
-  /* silkscreen plate + power LED on the bottom edge */
   .plate {
     position: absolute; bottom: 13px; left: 24px;
     font-size: 9px; font-weight: 600;
@@ -174,7 +164,12 @@
   .page a:not(.thumb), .meta a {
     padding: .2rem .45rem;
     margin: -.2rem -.45rem;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: rgba(15, 14, 11, 0.5);
+    text-underline-offset: 4px;
   }
+  .page a:not(.thumb):hover, .meta a:hover { text-decoration: none; }
   a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
   .page a:hover, .meta a:hover {
     background: linear-gradient(94deg, #e0703a, #c98a3c 45%, #4e8f86);
@@ -239,10 +234,18 @@
     letter-spacing: .12em; text-transform: uppercase;
     color: var(--muted);
   }
-  a.dom { color: var(--muted); width: fit-content; }
   .dom.dev { color: rgba(74, 69, 58, 0.75); }
   .desc { color: var(--muted); font-size: .9rem; line-height: 1.5; max-width: 32rem; }
-  .thumb { line-height: 0; justify-self: end; transition: box-shadow 120ms ease; }
+  .thumb { position: relative; line-height: 0; justify-self: end; }
+  .thumb::after {
+    content: "";
+    position: absolute; inset: -4px;
+    background: linear-gradient(110deg, #e0703a, #f2ddab 22%, #4e8f86 48%, #56789b 74%, #e0703a 100%);
+    background-size: 300% 300%;
+    opacity: 0;
+    transition: opacity 140ms ease;
+    animation: flow 3.5s ease-in-out infinite;
+  }
   .thumb img {
     width: 9rem; height: auto;
     aspect-ratio: 2 / 1;
@@ -250,15 +253,17 @@
     border: 1px solid var(--hair);
     filter: saturate(.92);
   }
-  .thumb:hover {
-    background: none;
-    box-shadow: 0 0 0 2px #e0703a, 0 0 0 4px #4e8f86;
-  }
+  .thumb:hover { background: none; }
+  .thumb:hover::after { opacity: 1; }
+  .thumb img { position: relative; z-index: 1; }
   @media (max-width: 640px) {
     .r { grid-template-columns: 1fr; gap: .6rem; }
     .thumb { justify-self: start; }
     .thumb img { width: 100%; }
     .meta.tr, .meta.bl { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .page, .thumb::after { animation: none; }
   }
 </style>
 </head>
@@ -277,7 +282,7 @@
 
 <div class="viewport">
 <div class="page">
-<span class="plate" aria-hidden="true">NIXX PI-01 · REV.C · MADE ON EARTH</span>
+<span class="plate" aria-hidden="true">NIXX PI-01 · REV.C</span>
 <span class="pwr" aria-hidden="true"><i></i>PWR</span>
 
 <header>
@@ -292,7 +297,7 @@
   <section>
     <h2 class="t-tools"><span>Tools</span><span class="count">05</span></h2>
     <div class="r" id="p01">
-      <div><a class="nm" href="https://notes.nixx.co">Nest</a><a class="dom" href="https://notes.nixx.co">notes.nixx.co</a></div>
+      <div><a class="nm" href="https://notes.nixx.co">Nest</a><span class="dom">notes.nixx.co</span></div>
       <p class="desc">An outliner built for one. Fast, keyboard-first, and text-only — infinite nesting, full-text search, backlinks, and offline support. No AI, no collaboration, just a very fast outline.</p>
       <a class="thumb" href="https://notes.nixx.co" tabindex="-1" aria-hidden="true"><img src="img/nest.jpg" alt="" width="1568" height="744" loading="lazy"></a>
     </div>
@@ -301,7 +306,7 @@
       <p class="desc">Agendas, notes, and follow-ups in one place, so meetings end with decisions.</p>
     </div>
     <div class="r" id="p03">
-      <div><a class="nm" href="https://github.com/dillonco/gitc">gitc</a><a class="dom" href="https://github.com/dillonco/gitc">Open source</a></div>
+      <div><a class="nm" href="https://github.com/dillonco/gitc">gitc</a><span class="dom">Open source</span></div>
       <p class="desc">A command-line companion that smooths out everyday git workflows.</p>
     </div>
     <div class="r" id="p04">
@@ -309,7 +314,7 @@
       <p class="desc">An operating system for running a company: people, process, and knowledge together.</p>
     </div>
     <div class="r" id="p05">
-      <div><a class="nm" href="https://kiteware.com">Kiteware</a><a class="dom" href="https://kiteware.com">kiteware.com</a></div>
+      <div><a class="nm" href="https://kiteware.com">Kiteware</a><span class="dom">kiteware.com</span></div>
       <p class="desc">Ship infrastructure, not YAML. Managed PostgreSQL, caches, S3-compatible storage, and git-push container deploys — provisioned in seconds from a single dashboard.</p>
       <a class="thumb" href="https://kiteware.com" tabindex="-1" aria-hidden="true"><img src="img/kiteware.jpg" alt="" width="1568" height="744" loading="lazy"></a>
     </div>
@@ -318,17 +323,17 @@
   <section>
     <h2 class="t-games"><span>Games</span><span class="count">03</span></h2>
     <div class="r" id="p06">
-      <div><a class="nm" href="https://costars.ai">Costars</a><a class="dom" href="https://costars.ai">costars.ai</a></div>
+      <div><a class="nm" href="https://costars.ai">Costars</a><span class="dom">costars.ai</span></div>
       <p class="desc">The Hollywood connection game, inspired by Six Degrees of Kevin Bacon. Find the shortest path between two actors through the movies they share — or try to beat the AI's path.</p>
       <a class="thumb" href="https://costars.ai" tabindex="-1" aria-hidden="true"><img src="img/costars.jpg" alt="" width="1568" height="744" loading="lazy"></a>
     </div>
     <div class="r" id="p07">
-      <div><a class="nm" href="https://stackz.ca">Stackz</a><a class="dom" href="https://stackz.ca">stackz.ca</a></div>
+      <div><a class="nm" href="https://stackz.ca">Stackz</a><span class="dom">stackz.ca</span></div>
       <p class="desc">Stake. Slam. Take it all. A physics-driven slam game for the browser — bet ten discs into a shared stack, launch the slammer, and keep everything that lands face-up.</p>
       <a class="thumb" href="https://stackz.ca" tabindex="-1" aria-hidden="true"><img src="img/stackz.jpg" alt="" width="1568" height="744" loading="lazy"></a>
     </div>
     <div class="r" id="p08">
-      <div><a class="nm" href="https://robertaroyale.com">Roberta Royale</a><a class="dom" href="https://robertaroyale.com">robertaroyale.com</a></div>
+      <div><a class="nm" href="https://robertaroyale.com">Roberta Royale</a><span class="dom">robertaroyale.com</span></div>
       <p class="desc">Free online Euchre, no account needed. Practice against AI, invite friends to a private game, or jump into a quick match — with an interactive tutorial that teaches the game in 20 minutes.</p>
       <a class="thumb" href="https://robertaroyale.com" tabindex="-1" aria-hidden="true"><img src="img/roberta-royale.jpg" alt="" width="1568" height="744" loading="lazy"></a>
     </div>
