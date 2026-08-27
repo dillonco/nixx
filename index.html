@@ -5,335 +5,121 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>nixx — tools and games by Dillon</title>
 <meta name="description" content="An index of software built by Dillon: tools like Nest, Meetings, gitc, CompanyOS, and Kiteware, and web games like Costars, Stackz, and Roberta Royale.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e0b20;
-    --ink: #eae6ff;
-    --muted: #b0aacd;
-    --link: #5ce8f5;
-    --visited: #c09aff;
-    --cyan: #22c7e6;      /* ice-clear shell */
-    --grape: #9b6bff;     /* atomic purple GBC */
-    --xgreen: #55d364;    /* crystal Xbox green */
-    --tangerine: #ff9e4a;
-    --magenta: #ff3fa4;
-    --ruby: #ff5470;
-    --smoke: #6f7a99;     /* smoke-black clear shell */
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --dot: #b5b5b5;
+    --link: #0000ee;
+    --visited: #551a8b;
+    --bg: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e8e8e8;
+      --muted: #9a9a9a;
+      --dot: #555555;
+      --link: #8ab4f8;
+      --visited: #c58af9;
+      --bg: #121212;
+    }
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
+    background: var(--bg);
     color: var(--ink);
-    font: 15px/1.65 "IBM Plex Sans", Verdana, "DejaVu Sans", sans-serif;
-    min-height: 100vh;
-    background-color: var(--bg);
-    background-image:
-      radial-gradient(48rem 32rem at 12% -8%, rgba(255, 63, 164, 0.16), transparent 60%),
-      radial-gradient(44rem 30rem at 95% 12%, rgba(34, 199, 230, 0.14), transparent 60%),
-      radial-gradient(40rem 32rem at 75% 100%, rgba(155, 107, 255, 0.14), transparent 60%),
-      linear-gradient(170deg, #131031 0%, #0e0b20 45%, #120c26 100%);
-    background-attachment: fixed;
-  }
-  /* CRT scanlines + slow refresh sweep */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    background-image:
-      linear-gradient(180deg, transparent 0%, rgba(180, 220, 255, 0.03) 45%, rgba(180, 220, 255, 0.055) 50%, transparent 55%),
-      repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 3px);
-    background-size: 100% 40vh, auto;
-    background-repeat: no-repeat, repeat;
-    background-position: 0 -40vh, 0 0;
-    animation: crt-sweep 9s linear infinite;
-  }
-  @keyframes crt-sweep {
-    from { background-position: 0 -40vh, 0 0; }
-    to   { background-position: 0 110vh, 0 0; }
-  }
-
-  /* dither field — offset dot grids in neon dust */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image:
-      radial-gradient(circle, rgba(92, 232, 245, 0.10) 1px, transparent 1.5px),
-      radial-gradient(circle, rgba(255, 63, 164, 0.07) 1px, transparent 1.5px);
-    background-size: 6px 6px, 6px 6px;
-    background-position: 0 0, 3px 3px;
-  }
-
-  .page {
-    position: relative;
-    z-index: 1;
-    max-width: 44rem;
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+    max-width: 40rem;
     margin: 0 auto;
-    padding: 3rem 1.25rem 5rem;
+    padding: 4rem 1.25rem 6rem;
   }
-
   a { color: var(--link); }
   a:visited { color: var(--visited); }
-  a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 2px; }
+  a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
-  /* ---- LCD pills ---- */
-  .lcd {
-    display: inline-block;
-    font-family: "VT323", monospace;
-    font-size: 1rem;
-    line-height: 1.2;
-    letter-spacing: 0.08em;
-    padding: 0.15rem 0.6rem;
-    border-radius: 3px;
-    background: linear-gradient(180deg, #060d18, #0d2233 55%, #060d18);
-    color: #6fe3ff;
-    text-shadow: 0 0 7px rgba(111, 227, 255, 0.65);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.75), 0 0 10px -3px rgba(111, 227, 255, 0.35);
-    white-space: nowrap;
-  }
-  .lcd a { color: inherit; text-decoration: none; }
-  .lcd-green {
-    background: linear-gradient(180deg, #04150a, #0e3319 55%, #04150a);
-    color: #7dfb92;
-    text-shadow: 0 0 7px rgba(125, 251, 146, 0.6);
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.75), 0 0 10px -3px rgba(125, 251, 146, 0.35);
-  }
-  .lcd-amber {
-    background: linear-gradient(180deg, #180d02, #3d2708 55%, #180d02);
-    color: #ffc46b;
-    text-shadow: 0 0 7px rgba(255, 196, 107, 0.55);
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.75), 0 0 10px -3px rgba(255, 196, 107, 0.3);
-  }
-
-  /* ---- header ---- */
-  header { margin-bottom: 3rem; }
-  .wordmark {
-    width: fit-content;
-    font-family: "Chakra Petch", "Arial Black", sans-serif;
+  header h1 {
+    font-size: 1.5rem;
     font-weight: 700;
-    font-size: clamp(3.2rem, 13vw, 5.25rem);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    line-height: 1.05;
-    background: linear-gradient(100deg, #5ce8f5 5%, #8f8dff 45%, #ff3fa4 95%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0 0 18px rgba(143, 141, 255, 0.35));
-    animation: neon-flicker 900ms linear both;
+    letter-spacing: -0.02em;
   }
-  /* neon tube warming up, once on load */
-  @keyframes neon-flicker {
-    0% { opacity: 0; }
-    8% { opacity: 0.85; }
-    13% { opacity: 0.15; }
-    22% { opacity: 1; }
-    28% { opacity: 0.35; }
-    36%, 100% { opacity: 1; }
-  }
-  /* blinking block cursor on the boot LCD */
-  #boot::after {
-    content: "▮";
-    margin-left: 3px;
-    animation: blink 1s steps(1) infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
-  header .intro {
-    margin-top: 1rem;
+  header p {
+    margin-top: 0.75rem;
     color: var(--muted);
-    max-width: 36rem;
+    max-width: 34rem;
   }
-  header .lcd { margin-bottom: 1.25rem; }
 
-  /* ---- sections ---- */
   h2 {
-    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.8rem;
     font-weight: 600;
-    font-size: 0.85rem;
-    letter-spacing: 0.35em;
     text-transform: uppercase;
-    color: #8d86b8;
-    margin: 3rem 0 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  h2::after {
-    content: "";
-    flex: 1;
-    border-bottom: 2px dotted rgba(141, 134, 184, 0.45);
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin: 3rem 0 1rem;
   }
 
-  /* ---- smoke-translucent shells ---- */
   ul.index { list-style: none; }
-  ul.index li.card {
-    --tint: var(--smoke);
-    position: relative;
-    margin-bottom: 1.4rem;
-    padding: 1.1rem 1.3rem 1.2rem;
-    border-radius: 8px;
-    border: 1px solid color-mix(in srgb, var(--tint) 50%, rgba(255, 255, 255, 0.16));
-    background:
-      /* corner screws */
-      radial-gradient(circle 2px at 10px 10px, rgba(255, 255, 255, 0.28) 99%, transparent),
-      radial-gradient(circle 2px at calc(100% - 10px) 10px, rgba(255, 255, 255, 0.28) 99%, transparent),
-      radial-gradient(circle 2px at 10px calc(100% - 10px), rgba(255, 255, 255, 0.28) 99%, transparent),
-      radial-gradient(circle 2px at calc(100% - 10px) calc(100% - 10px), rgba(255, 255, 255, 0.28) 99%, transparent),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.05)),
-      color-mix(in srgb, var(--tint) 13%, rgba(18, 14, 40, 0.6));
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.22),
-      inset 0 -12px 22px color-mix(in srgb, var(--tint) 14%, transparent),
-      0 10px 30px -10px color-mix(in srgb, var(--tint) 55%, rgba(0, 0, 0, 0.7)),
-      0 0 22px -8px color-mix(in srgb, var(--tint) 60%, transparent);
-    transition: transform 180ms ease, box-shadow 180ms ease;
-    animation: rise 480ms ease both;
-    animation-delay: calc(var(--i, 0) * 80ms);
-  }
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: none; }
-  }
-  /* molded gloss across the top of the shell */
-  ul.index li.card::before {
-    content: "";
-    position: absolute;
-    inset: 2px 6px auto 6px;
-    height: 38%;
-    border-radius: 6px 6px 30% 30%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0));
-    pointer-events: none;
-  }
-  ul.index li.card:hover {
-    transform: translateY(-3px);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.22),
-      inset 0 -12px 22px color-mix(in srgb, var(--tint) 14%, transparent),
-      0 16px 36px -10px color-mix(in srgb, var(--tint) 65%, rgba(0, 0, 0, 0.7)),
-      0 0 30px -8px color-mix(in srgb, var(--tint) 75%, transparent);
-  }
-
-  ul.index li.card.ice        { --tint: var(--cyan); }
-  ul.index li.card.grape      { --tint: var(--grape); }
-  ul.index li.card.xgreen     { --tint: var(--xgreen); }
-  ul.index li.card.tangerine  { --tint: var(--tangerine); }
-  ul.index li.card.magenta    { --tint: var(--magenta); }
-  ul.index li.card.ruby       { --tint: var(--ruby); }
-
-  /* hover light-up: pills brighten, thumbs glow, names halo */
-  ul.index li.card:hover .lcd { filter: brightness(1.3); }
-  ul.index li.card:hover .thumb img {
-    box-shadow: 0 0 26px -4px color-mix(in srgb, var(--tint) 85%, transparent);
-  }
-  a.name:hover { text-shadow: 0 0 9px rgba(234, 230, 255, 0.65); }
+  ul.index li { margin-bottom: 1.75rem; }
 
   .row {
-    position: relative;
     display: flex;
     align-items: baseline;
-    gap: 0.7rem;
+    gap: 0.6rem;
   }
-  .row .name {
-    font-family: "Chakra Petch", sans-serif;
-    font-weight: 600;
-    font-size: 1.05rem;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-    color: var(--ink);
-  }
-  a.name { text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  .row .name { font-weight: 600; white-space: nowrap; }
   .row .leader {
     flex: 1;
-    border-bottom: 2px dotted color-mix(in srgb, var(--tint) 60%, rgba(255, 255, 255, 0.3));
-    transform: translateY(-0.35em);
+    border-bottom: 1px dotted var(--dot);
+    transform: translateY(-0.3em);
+  }
+  .row .tag {
+    color: var(--muted);
+    font-size: 0.8rem;
+    white-space: nowrap;
   }
 
   .body {
-    position: relative;
     display: flex;
-    gap: 1.1rem;
+    gap: 1rem;
     align-items: flex-start;
-    margin-top: 0.6rem;
+    margin-top: 0.35rem;
   }
-  .desc { color: var(--muted); font-size: 0.85rem; flex: 1; }
-  .thumb { flex-shrink: 0; line-height: 0; }
+  .desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    flex: 1;
+  }
+  .thumb {
+    flex-shrink: 0;
+    line-height: 0;
+  }
   .thumb img {
     width: 10.5rem;
     height: auto;
     aspect-ratio: 2 / 1;
     object-fit: cover;
     object-position: top;
-    border-radius: 5px;
-    border: 1px solid color-mix(in srgb, var(--tint) 50%, rgba(255, 255, 255, 0.25));
-    box-shadow: 0 0 16px -5px color-mix(in srgb, var(--tint) 65%, transparent);
+    border: 1px solid var(--dot);
+    border-radius: 4px;
   }
-  @media (max-width: 500px) {
+  @media (max-width: 480px) {
     .body { flex-direction: column; }
     .thumb img { width: 100%; }
   }
 
-  /* ---- footer ---- */
   footer {
-    margin-top: 3.5rem;
-    padding: 0.9rem 1.3rem;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
-      rgba(18, 14, 40, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 24px -10px rgba(0, 0, 0, 0.7);
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--dot);
     color: var(--muted);
-    font-size: 0.85rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .ticker {
-    flex-basis: 100%;
-    overflow: hidden;
-    padding-left: 0;
-    padding-right: 0;
-  }
-  .ticker span {
-    display: inline-block;
-    white-space: nowrap;
-    padding-left: 100%;
-    animation: ticker 26s linear infinite;
-  }
-  @keyframes ticker { to { transform: translateX(-100%); } }
-
-  @media (prefers-reduced-motion: reduce) {
-    ul.index li.card { transition: none; animation: none; }
-    ul.index li.card:hover { transform: none; }
-    body::after { animation: none; }
-    .wordmark { animation: none; }
-    #boot::after { animation: none; }
-    .ticker span { animation: none; padding-left: 0; }
+    font-size: 0.9rem;
   }
 </style>
 </head>
 <body>
-<div class="page">
 
 <header>
-  <span class="lcd" id="boot">NIXX.CO ▪ PERSONAL INDEX ▪ 6 LIVE / 2 IN DEV</span>
-  <h1 class="wordmark">nixx</h1>
-  <p class="intro">
+  <h1>nixx</h1>
+  <p>
     Tools and games by Dillon — developer, builder, and product manager.
     Everything here is designed, built, and shipped by one person.
     This page is the index.
@@ -343,33 +129,33 @@
 <main>
   <h2>Tools</h2>
   <ul class="index">
-    <li class="card ice" style="--i:0">
-      <div class="row"><a class="name" href="https://notes.nixx.co">Nest</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://notes.nixx.co">notes.nixx.co</a></span></div>
+    <li>
+      <div class="row"><a class="name" href="https://notes.nixx.co">Nest</a><span class="leader"></span><span class="tag">notes.nixx.co</span></div>
       <div class="body">
         <p class="desc">An outliner built for one. Fast, keyboard-first, and text-only — infinite nesting, full-text search, backlinks, and offline support. No AI, no collaboration, just a very fast outline.</p>
         <a class="thumb" href="https://notes.nixx.co" tabindex="-1" aria-hidden="true"><img src="img/nest.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
     </li>
-    <li class="card" style="--i:1">
-      <div class="row"><span class="name">Meetings</span><span class="leader"></span><span class="lcd lcd-amber">IN DEV</span></div>
+    <li>
+      <div class="row"><span class="name">Meetings</span><span class="leader"></span><span class="tag">soon</span></div>
       <div class="body">
         <p class="desc">Agendas, notes, and follow-ups in one place, so meetings end with decisions.</p>
       </div>
     </li>
-    <li class="card xgreen" style="--i:2">
-      <div class="row"><a class="name" href="https://github.com/dillonco/gitc">gitc</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://github.com/dillonco/gitc">OPEN SOURCE</a></span></div>
+    <li>
+      <div class="row"><a class="name" href="https://github.com/dillonco/gitc">gitc</a><span class="leader"></span><span class="tag">open source</span></div>
       <div class="body">
         <p class="desc">A command-line companion that smooths out everyday git workflows.</p>
       </div>
     </li>
-    <li class="card" style="--i:3">
-      <div class="row"><span class="name">CompanyOS</span><span class="leader"></span><span class="lcd lcd-amber">IN DEV</span></div>
+    <li>
+      <div class="row"><span class="name">CompanyOS</span><span class="leader"></span><span class="tag">soon</span></div>
       <div class="body">
         <p class="desc">An operating system for running a company: people, process, and knowledge together.</p>
       </div>
     </li>
-    <li class="card grape" style="--i:4">
-      <div class="row"><a class="name" href="https://kiteware.com">Kiteware</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://kiteware.com">kiteware.com</a></span></div>
+    <li>
+      <div class="row"><a class="name" href="https://kiteware.com">Kiteware</a><span class="leader"></span><span class="tag">kiteware.com</span></div>
       <div class="body">
         <p class="desc">Ship infrastructure, not YAML. Managed PostgreSQL, caches, S3-compatible storage, and git-push container deploys — provisioned in seconds from a single dashboard.</p>
         <a class="thumb" href="https://kiteware.com" tabindex="-1" aria-hidden="true"><img src="img/kiteware.jpg" alt="" width="1568" height="744" loading="lazy"></a>
@@ -379,22 +165,22 @@
 
   <h2>Games</h2>
   <ul class="index">
-    <li class="card tangerine" style="--i:5">
-      <div class="row"><a class="name" href="https://costars.ai">Costars</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://costars.ai">costars.ai</a></span></div>
+    <li>
+      <div class="row"><a class="name" href="https://costars.ai">Costars</a><span class="leader"></span><span class="tag">costars.ai</span></div>
       <div class="body">
         <p class="desc">The Hollywood connection game, inspired by Six Degrees of Kevin Bacon. Find the shortest path between two actors through the movies they share — or try to beat the AI's path.</p>
         <a class="thumb" href="https://costars.ai" tabindex="-1" aria-hidden="true"><img src="img/costars.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
     </li>
-    <li class="card magenta" style="--i:6">
-      <div class="row"><a class="name" href="https://stackz.ca">Stackz</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://stackz.ca">stackz.ca</a></span></div>
+    <li>
+      <div class="row"><a class="name" href="https://stackz.ca">Stackz</a><span class="leader"></span><span class="tag">stackz.ca</span></div>
       <div class="body">
         <p class="desc">Stake. Slam. Take it all. A physics-driven slam game for the browser — bet ten discs into a shared stack, launch the slammer, and keep everything that lands face-up.</p>
         <a class="thumb" href="https://stackz.ca" tabindex="-1" aria-hidden="true"><img src="img/stackz.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
     </li>
-    <li class="card ruby" style="--i:7">
-      <div class="row"><a class="name" href="https://robertaroyale.com">Roberta Royale</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://robertaroyale.com">robertaroyale.com</a></span></div>
+    <li>
+      <div class="row"><a class="name" href="https://robertaroyale.com">Roberta Royale</a><span class="leader"></span><span class="tag">robertaroyale.com</span></div>
       <div class="body">
         <p class="desc">Free online Euchre, no account needed. Practice against AI, invite friends to a private game, or jump into a quick match — with an interactive tutorial that teaches the game in 20 minutes.</p>
         <a class="thumb" href="https://robertaroyale.com" tabindex="-1" aria-hidden="true"><img src="img/roberta-royale.jpg" alt="" width="1568" height="744" loading="lazy"></a>
@@ -404,25 +190,8 @@
 </main>
 
 <footer>
-  <span>Built by Dillon</span>
-  <span class="lcd"><a href="https://github.com/dillonco">GITHUB.COM/DILLONCO</a></span>
-  <span class="lcd ticker" aria-hidden="true"><span>NIXX ▪ HAND-BUILT SOFTWARE ▪ 5 TOOLS / 3 GAMES ▪ DESIGNED, BUILT + SHIPPED BY ONE PERSON ▪ MORE IN DEV ▪ THANKS FOR VISITING ▪</span></span>
+  <p>Built by Dillon · <a href="https://github.com/dillonco">github.com/dillonco</a></p>
 </footer>
 
-</div>
-<script>
-(() => {
-  const lcd = document.getElementById('boot');
-  if (!lcd || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const text = lcd.textContent;
-  lcd.setAttribute('aria-label', text);
-  lcd.textContent = '';
-  let i = 0;
-  const t = setInterval(() => {
-    lcd.textContent = text.slice(0, ++i);
-    if (i >= text.length) clearInterval(t);
-  }, 28);
-})();
-</script>
 </body>
 </html>
