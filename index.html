@@ -62,16 +62,6 @@
   .meta.br { bottom: 24px; right: 30px; text-align: right; }
   .meta a { color: inherit; }
 
-  .rail {
-    position: fixed; z-index: 7;
-    left: 30px; top: 50%;
-    transform: translateY(-50%);
-    display: flex; flex-direction: column; gap: .55rem;
-    font-weight: 600; font-size: 10.5px; letter-spacing: .08em;
-  }
-  .rail a { color: var(--ink); opacity: .38; text-decoration: none; }
-  .rail a:hover, .rail a:focus-visible { opacity: 1; }
-  @media (max-width: 980px) { .rail { display: none; } }
 
   /* ---- the glass case, square ---- */
   .page {
@@ -132,7 +122,10 @@
     transition: background-color 120ms ease, color 120ms ease;
   }
   a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-  .page a:hover, .meta a:hover { background: var(--ink); color: var(--cream); }
+  .page a:hover, .meta a:hover {
+    background: linear-gradient(94deg, #e0703a, #c98a3c 45%, #4e8f86);
+    color: #fdf8ea;
+  }
   .meta a, .lead a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 
   /* ---- header: statement lead ---- */
@@ -175,7 +168,9 @@
     padding: 1.05rem 0 1.15rem;
     border-bottom: 1px solid rgba(15, 14, 11, 0.28);
     align-items: start;
+    transition: background-color 160ms ease;
   }
+  .r:hover { background: linear-gradient(90deg, rgba(224, 112, 58, 0.09), rgba(242, 221, 171, 0.10) 50%, rgba(78, 143, 134, 0.10)); }
   section .r:last-child { border-bottom: none; }
   .nm {
     display: inline-block;
@@ -200,7 +195,10 @@
     border: 1px solid var(--hair);
     filter: saturate(.92);
   }
-  .thumb:hover { background: none; box-shadow: 0 0 0 2px var(--ink); }
+  .thumb:hover {
+    background: none;
+    box-shadow: 0 0 0 2px #e0703a, 0 0 0 4px #4e8f86;
+  }
   @media (max-width: 640px) {
     .r { grid-template-columns: 1fr; gap: .6rem; }
     .thumb { justify-self: start; }
@@ -222,11 +220,6 @@
 <div class="meta bl">Built by Dillon</div>
 <div class="meta br"><a href="https://github.com/dillonco">github.com/dillonco</a></div>
 
-<nav class="rail" aria-label="Project index">
-  <a href="#p01">01</a><a href="#p02">02</a><a href="#p03">03</a><a href="#p04">04</a>
-  <a href="#p05">05</a><a href="#p06">06</a><a href="#p07">07</a><a href="#p08">08</a>
-</nav>
-
 <div class="viewport">
 <div class="page">
 <span class="plate" aria-hidden="true">NIXX PI-01 · REV.C · MADE ON EARTH</span>
@@ -235,8 +228,7 @@
 <header>
   <p class="label">Index of work</p>
   <p class="lead">
-    Tools and games by <em>Dillon</em> — developer, builder, and product manager.
-    Everything here is designed, built, and shipped by one person.
+    I'm <em>Dillon</em>. I build tools and games — and ship everything here myself.
   </p>
   <p class="sub">Role — Developer · Builder · Product manager</p>
 </header>
