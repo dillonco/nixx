@@ -136,6 +136,17 @@
     50%  { background-position: 0 0, 100% 50%; }
     100% { background-position: 0 0, 0% 50%; }
   }
+  /* molded gloss sweep across the shell */
+  .page::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(118deg,
+      rgba(255, 255, 255, 0) 18%,
+      rgba(255, 255, 255, 0.17) 25%,
+      rgba(255, 255, 255, 0.03) 32%,
+      rgba(255, 255, 255, 0) 40%);
+    pointer-events: none;
+  }
   .plate {
     position: absolute; bottom: 13px; left: 24px;
     font-size: 9px; font-weight: 600;
