@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nixx — translucent hardware design sample</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font: 14px/1.6 system-ui, sans-serif;
+    background: #101014;
+    color: #ddd;
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+  }
+  h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: .02em; }
+  .sub { color: #888; margin-top: .3rem; font-size: .85rem; }
+  .shots {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2.5rem;
+  }
+  figure { display: flex; flex-direction: column; }
+  figcaption {
+    margin-top: .9rem;
+    font-size: .75rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #9a9aa4;
+    text-align: center;
+  }
+
+  /* ================= studio backdrops ================= */
+  .studio {
+    width: 480px;
+    max-width: 100%;
+    height: 560px;
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .studio.light {
+    background:
+      radial-gradient(120% 90% at 50% 18%, #ffffff 0%, #f2f2f4 55%, #dcdce2 100%);
+  }
+  .studio.dark {
+    background:
+      radial-gradient(120% 90% at 50% 20%, #33333c 0%, #202027 55%, #131318 100%);
+  }
+  /* fine studio grain */
+  .studio::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .ground {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    filter: blur(14px);
+  }
+
+  /* ================= CP-1 style amber disc player ================= */
+  .cp1 {
+    position: relative;
+    width: 330px;
+    height: 372px;
+    border-radius: 20px;
+    background:
+      linear-gradient(158deg,
+        rgba(255, 186, 40, 0.94) 0%,
+        rgba(255, 152, 10, 0.95) 45%,
+        rgba(242, 122, 0, 0.96) 78%,
+        rgba(224, 106, 0, 0.97) 100%);
+    border: 1px solid rgba(255, 224, 150, 0.9);
+    box-shadow:
+      inset 0 2px 0 rgba(255, 244, 210, 0.95),
+      inset 3px 0 6px -2px rgba(255, 236, 180, 0.6),
+      inset -4px -6px 10px -4px rgba(160, 66, 0, 0.75),
+      0 24px 40px -16px rgba(150, 70, 0, 0.55),
+      0 6px 14px -6px rgba(150, 70, 0, 0.4);
+  }
+  /* inner acrylic rim */
+  .cp1 .rim {
+    position: absolute;
+    inset: 7px;
+    border-radius: 14px;
+    border: 2px solid rgba(255, 232, 170, 0.42);
+    box-shadow: inset 0 0 12px rgba(255, 210, 120, 0.35);
+    pointer-events: none;
+  }
+  /* silkscreened circuit traces in the acrylic */
+  .cp1 .traces {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    opacity: .5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='330' height='372'%3E%3Cg fill='none' stroke='%23a85400' stroke-width='1.6'%3E%3Cpath d='M22 34h44v16h38'/%3E%3Cpath d='M22 46h30v22h52'/%3E%3Cpath d='M308 42h-40v18h-30'/%3E%3Cpath d='M24 338h56v-14h36'/%3E%3Cpath d='M306 330h-48v-18h-28'/%3E%3Cpath d='M306 344h-64'/%3E%3C/g%3E%3Cg fill='%23a85400'%3E%3Ccircle cx='104' cy='50' r='2.6'/%3E%3Ccircle cx='104' cy='68' r='2.6'/%3E%3Ccircle cx='238' cy='60' r='2.6'/%3E%3Ccircle cx='116' cy='324' r='2.6'/%3E%3Ccircle cx='230' cy='312' r='2.6'/%3E%3Ccircle cx='242' cy='344' r='2.6'/%3E%3C/g%3E%3Cg fill='none' stroke='%23c06800' stroke-width='1'%3E%3Crect x='250' y='24' width='34' height='12' rx='2'/%3E%3Crect x='40' y='310' width='26' height='10' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  /* the disc, seen through the shell */
+  .cp1 .disc {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    width: 268px;
+    height: 268px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background:
+      repeating-radial-gradient(circle at 50% 50%,
+        rgba(255, 255, 255, 0.06) 0 1.5px, rgba(0, 0, 0, 0.02) 1.5px 3px),
+      conic-gradient(from 218deg,
+        #cfcfdc 0deg, #edc2f7 30deg, #a8dcfa 72deg, #dcdce8 115deg,
+        #ffd9a3 160deg, #b8d4fa 205deg, #e8e8ee 245deg, #d4b8f0 290deg,
+        #aadcee 330deg, #cfcfdc 360deg);
+    box-shadow:
+      0 10px 18px -6px rgba(140, 60, 0, 0.5),
+      inset 0 1px 2px rgba(255, 255, 255, 0.9),
+      inset 0 -2px 4px rgba(120, 90, 40, 0.25);
+  }
+  /* hub: clear ring + center hole showing lens */
+  .cp1 .disc::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 92px; height: 92px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle,
+        #16161c 0 17px,
+        #3a3a44 17px 20px,
+        #c9c9cf 20px 24px,
+        rgba(255, 200, 120, 0.85) 24px 34px,
+        rgba(235, 235, 240, 0.9) 34px 38px,
+        #dfdfe6 38px 46px);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.35);
+  }
+  /* amber acrylic over the disc */
+  .cp1 .disc-tint {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    width: 268px;
+    height: 268px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgba(255, 145, 15, 0.20);
+    pointer-events: none;
+  }
+  /* laser lens glint */
+  .cp1 .disc::after {
+    content: "";
+    position: absolute;
+    top: calc(50% - 12px);
+    left: calc(50% - 4px);
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.95), rgba(255,255,255,0) 70%);
+  }
+  /* LED dot-matrix status block */
+  .cp1 .led {
+    position: absolute;
+    right: 26px;
+    bottom: 30px;
+    width: 44px;
+    height: 32px;
+    border-radius: 4px;
+    background:
+      radial-gradient(circle 2.1px at 6px 6px, #57b2ff 99%, transparent) 0 0 / 8px 8px repeat,
+      linear-gradient(180deg, #0a1626, #0d1f36);
+    box-shadow:
+      inset 0 1px 3px rgba(0, 0, 0, 0.8),
+      0 0 12px -2px rgba(87, 178, 255, 0.7);
+  }
+  .cp1 .led-label {
+    position: absolute;
+    right: 26px;
+    bottom: 16px;
+    font-size: 6.5px;
+    letter-spacing: .08em;
+    color: #7c3d00;
+    font-weight: 600;
+  }
+  /* silkscreen wordmark */
+  .cp1 .mark {
+    position: absolute;
+    left: 26px;
+    bottom: 18px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .3em;
+    color: rgba(124, 61, 0, 0.85);
+  }
+  /* corner screws */
+  .cp1 .screw {
+    position: absolute;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background:
+      linear-gradient(115deg, transparent 44%, rgba(60,40,10,.75) 44% 56%, transparent 56%),
+      radial-gradient(circle at 35% 30%, #f4ede0, #b9ae98 55%, #8d8270);
+    box-shadow: 0 1px 2px rgba(120, 50, 0, 0.5), inset 0 0 1px rgba(0,0,0,.4);
+  }
+  .cp1 .screw.tl { top: 13px; left: 13px; }
+  .cp1 .screw.tr { top: 13px; right: 13px; }
+  .cp1 .screw.bl { bottom: 13px; left: 13px; }
+  .cp1 .screw.br { bottom: 13px; right: 13px; }
+  /* acrylic gloss sweep on top of everything */
+  .cp1 .gloss {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background:
+      linear-gradient(118deg,
+        rgba(255, 255, 255, 0) 18%,
+        rgba(255, 255, 255, 0.34) 26%,
+        rgba(255, 255, 255, 0.06) 33%,
+        rgba(255, 255, 255, 0) 40%),
+      linear-gradient(180deg, rgba(255, 240, 200, 0.16), rgba(255, 140, 20, 0.10) 60%);
+    pointer-events: none;
+  }
+
+  /* ================= X25-style frosted green tower ================= */
+  .tower {
+    position: relative;
+    width: 216px;
+    height: 420px;
+    border-radius: 14px 14px 10px 10px;
+    overflow: hidden;
+    background: linear-gradient(165deg,
+      rgba(154, 196, 44, 0.55) 0%,
+      rgba(128, 176, 30, 0.62) 45%,
+      rgba(96, 140, 20, 0.72) 100%);
+    border: 1px solid rgba(214, 246, 140, 0.55);
+    box-shadow:
+      inset 0 2px 0 rgba(236, 255, 180, 0.6),
+      inset 2px 0 8px -2px rgba(230, 255, 170, 0.35),
+      inset -6px -8px 16px -6px rgba(30, 50, 5, 0.7),
+      0 30px 48px -18px rgba(0, 0, 0, 0.85),
+      0 0 40px -12px rgba(154, 200, 40, 0.4);
+  }
+  /* internals, silhouetted behind the frost */
+  .tower .internals {
+    position: absolute;
+    inset: 0;
+    filter: blur(3px);
+    opacity: .9;
+  }
+  .tower .internals .heatsink {
+    position: absolute;
+    top: 58px; left: 18px; right: 18px; height: 104px;
+    background: repeating-linear-gradient(90deg,
+      rgba(18, 30, 3, 0.95) 0 7px, rgba(88, 122, 24, 0.45) 7px 12px);
+    border-radius: 4px;
+  }
+  .tower .internals .board {
+    position: absolute;
+    top: 176px; left: 26px; right: 40px; height: 120px;
+    background: linear-gradient(180deg, rgba(14, 26, 3, 0.95), rgba(30, 48, 7, 0.88));
+    border-radius: 4px;
+  }
+  .tower .internals .chip {
+    position: absolute;
+    top: 206px; left: 62px; width: 66px; height: 52px;
+    background: rgba(6, 12, 1, 0.98);
+    border-radius: 3px;
+  }
+  .tower .internals .drive {
+    position: absolute;
+    bottom: 34px; left: 20px; right: 30px; height: 58px;
+    background: linear-gradient(180deg, rgba(20, 34, 5, 0.95), rgba(10, 20, 2, 0.95));
+    border-radius: 4px;
+  }
+  .tower .internals .cable {
+    position: absolute;
+    top: 300px; right: 28px; width: 14px; height: 84px;
+    background: rgba(50, 76, 12, 0.8);
+    border-radius: 7px;
+    transform: rotate(8deg);
+  }
+  /* frost layer */
+  .tower .frost {
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 34px rgba(50, 78, 8, 0.45), inset 0 -14px 24px rgba(30, 48, 5, 0.4);
+    background:
+      linear-gradient(160deg, rgba(214, 244, 130, 0.16), rgba(170, 214, 70, 0.10) 55%, rgba(130, 174, 40, 0.14)),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.85 0 0 0 0 1 0 0 0 0 0.55 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  /* glowing vent grid */
+  .tower .vent {
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 52px;
+    background:
+      radial-gradient(circle 2.4px at 5px 5px, rgba(16, 26, 2, 0.95) 99%, transparent) 4px 4px / 10px 10px repeat,
+      radial-gradient(90% 130% at 50% 0%, #e2ff6a 0%, #b8e83e 45%, #86b424 100%);
+    box-shadow:
+      0 6px 18px -4px rgba(190, 240, 70, 0.55),
+      inset 0 -3px 6px rgba(40, 60, 8, 0.55);
+  }
+  /* power button */
+  .tower .power {
+    position: absolute;
+    top: 64px; right: 20px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 38% 32%, rgba(255,255,255,.5), rgba(255,255,255,0) 55%),
+      radial-gradient(circle, #d8f870 0 30%, #9cc832 62%, #6f9a1e 100%);
+    box-shadow:
+      0 0 14px -2px rgba(216, 248, 112, 0.9),
+      inset 0 1px 2px rgba(255, 255, 255, 0.7),
+      inset 0 -2px 4px rgba(50, 80, 8, 0.6);
+  }
+  /* etched wordmark */
+  .tower .etch {
+    position: absolute;
+    bottom: 104px;
+    right: 24px;
+    writing-mode: vertical-rl;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .34em;
+    color: rgba(36, 62, 8, 0.6);
+    text-shadow: 0 1px 0 rgba(230, 255, 170, 0.35);
+  }
+  /* side gloss streak */
+  .tower .sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg,
+      rgba(255, 255, 255, 0) 6%,
+      rgba(255, 255, 255, 0.30) 10%,
+      rgba(255, 255, 255, 0.05) 15%,
+      rgba(255, 255, 255, 0) 22%);
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<h1>nixx — translucent hardware design sample</h1>
+<p class="sub">Two CSS-rendered studies: amber acrylic disc player (CP-1 reference) and frosted OG-green tower (Xbox X25 reference).</p>
+
+<div class="shots">
+
+  <figure>
+    <div class="studio light">
+      <div class="ground" style="width: 300px; height: 36px; background: rgba(150, 90, 20, 0.35);"></div>
+      <div class="cp1">
+        <div class="traces"></div>
+        <div class="rim"></div>
+        <div class="disc"></div>
+        <div class="disc-tint"></div>
+        <div class="led"></div>
+        <div class="led-label">CHECK CURRENT STATUS</div>
+        <div class="mark">NIXX</div>
+        <span class="screw tl"></span><span class="screw tr"></span>
+        <span class="screw bl"></span><span class="screw br"></span>
+        <div class="gloss"></div>
+      </div>
+    </div>
+    <figcaption>01 · disc player — translucent amber acrylic</figcaption>
+  </figure>
+
+  <figure>
+    <div class="studio dark">
+      <div class="ground" style="width: 240px; height: 34px; background: rgba(0, 0, 0, 0.75);"></div>
+      <div class="tower">
+        <div class="internals">
+          <div class="heatsink"></div>
+          <div class="board"></div>
+          <div class="chip"></div>
+          <div class="drive"></div>
+          <div class="cable"></div>
+        </div>
+        <div class="frost"></div>
+        <div class="vent"></div>
+        <div class="power"></div>
+        <div class="etch">NIXX 25</div>
+        <div class="sheen"></div>
+      </div>
+    </div>
+    <figcaption>02 · tower — frosted OG-green shell</figcaption>
+  </figure>
+
+</div>
+
+</body>
+</html>
