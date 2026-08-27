@@ -5,193 +5,878 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>nixx — tools and games by Dillon</title>
 <meta name="description" content="An index of software built by Dillon: tools like Nest, Meetings, gitc, CompanyOS, and Kiteware, and web games like Costars, Stackz, and Roberta Royale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a1a1a;
-    --muted: #6b6b6b;
-    --dot: #b5b5b5;
-    --link: #0000ee;
-    --visited: #551a8b;
-    --bg: #ffffff;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --ink: #e8e8e8;
-      --muted: #9a9a9a;
-      --dot: #555555;
-      --link: #8ab4f8;
-      --visited: #c58af9;
-      --bg: #121212;
-    }
-  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #151412;
+    --muted: #3d3a33;
+    --hair: rgba(21, 20, 18, 0.55);
+    --teal: #4e8f86;
+    --green: #6faa2a;
+    --amber: #e8931a;
+    --orange: #e8763a;
+    --rust: #c25436;
+    --brick: #a8402e;
+    --smoke: #8a857a;
+  }
+  html { scroll-behavior: smooth; }
   body {
-    background: var(--bg);
+    font: 14px/1.7 ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
     color: var(--ink);
-    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
-    max-width: 40rem;
-    margin: 0 auto;
-    padding: 4rem 1.25rem 6rem;
+    background: #d9d3c2;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
-  a { color: var(--link); }
-  a:visited { color: var(--visited); }
-  a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
-  header h1 {
-    font-size: 1.5rem;
+  /* ---- animated undertone gradient ---- */
+  .bg { position: fixed; inset: -25%; z-index: 0; pointer-events: none; }
+  .bg i {
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+  }
+  .bg .b1 {
+    width: 75vmax; height: 75vmax; left: -12%; top: -8%;
+    background: radial-gradient(circle, rgba(232, 118, 58, 0.85) 0%, rgba(232, 118, 58, 0.4) 42%, transparent 68%);
+    animation: drift1 47s ease-in-out infinite alternate;
+  }
+  .bg .b2 {
+    width: 65vmax; height: 65vmax; left: 22%; top: 26%;
+    background: radial-gradient(circle, rgba(242, 221, 171, 0.9) 0%, rgba(242, 221, 171, 0.42) 45%, transparent 70%);
+    animation: drift2 61s ease-in-out infinite alternate;
+  }
+  .bg .b3 {
+    width: 70vmax; height: 70vmax; right: -8%; top: -12%;
+    background: radial-gradient(circle, rgba(74, 105, 130, 0.85) 0%, rgba(74, 105, 130, 0.4) 45%, transparent 70%);
+    animation: drift3 73s ease-in-out infinite alternate;
+  }
+  .bg .b4 {
+    width: 60vmax; height: 60vmax; left: 30%; bottom: -14%;
+    background: radial-gradient(circle, rgba(78, 143, 134, 0.75) 0%, rgba(78, 143, 134, 0.35) 45%, transparent 70%);
+    animation: drift4 89s ease-in-out infinite alternate;
+  }
+  .bg .b5 {
+    width: 46vmax; height: 46vmax; right: 16%; bottom: 6%;
+    background: radial-gradient(circle, rgba(240, 200, 120, 0.6) 0%, transparent 62%);
+    animation: drift1 53s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes drift1 { to { transform: translate(14vw, 10vh) scale(1.22) rotate(20deg); } }
+  @keyframes drift2 { to { transform: translate(-12vw, -8vh) scale(1.3) rotate(-14deg); } }
+  @keyframes drift3 { to { transform: translate(-10vw, 12vh) scale(1.18) rotate(10deg); } }
+  @keyframes drift4 { to { transform: translate(10vw, -10vh) scale(1.26) rotate(-18deg); } }
+
+  /* ---- film grain over everything ---- */
+  .grain {
+    position: fixed; inset: 0; z-index: 6; pointer-events: none; opacity: .5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.38 0 0 0 0 0.33 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  /* ---- hairline frame + corner metadata ---- */
+  .frame {
+    position: fixed; inset: 14px; z-index: 5; pointer-events: none;
+    border: 1px solid var(--hair);
+  }
+  .meta {
+    position: fixed; z-index: 7;
+    font-family: "Doto", monospace;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    line-height: 1.55; color: var(--ink);
   }
-  header p {
-    margin-top: 0.75rem;
-    color: var(--muted);
-    max-width: 34rem;
+  .meta b { font-weight: 900; }
+  .meta.tl { top: 22px; left: 26px; }
+  .meta.tr { top: 22px; right: 26px; text-align: right; }
+  .meta.bl { bottom: 22px; left: 26px; }
+  .meta.br { bottom: 22px; right: 26px; text-align: right; }
+  .meta a { color: inherit; }
+
+  /* ---- layout ---- */
+  .page {
+    position: relative; z-index: 1;
+    max-width: 54rem;
+    margin: 0 auto;
+    padding: 6rem 2rem 7rem;
   }
 
-  h2 {
-    font-size: 0.8rem;
-    font-weight: 600;
+  a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  .kicker {
+    font-family: "Doto", monospace;
+    font-weight: 700;
+    font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  h1 {
+    font-family: "Doto", monospace;
+    font-size: clamp(3.6rem, 12vw, 7rem);
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    margin: 3rem 0 1rem;
+    letter-spacing: .04em;
+    line-height: 1;
+    margin: .6rem 0 1.5rem;
   }
+  .intro { max-width: 34rem; color: var(--muted); }
+  .facts {
+    display: flex; gap: 4rem; flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .facts h3 {
+    font-family: "Doto", monospace;
+    font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--muted); font-weight: 700; margin-bottom: .3rem;
+  }
+  .facts p { font-size: .84rem; }
 
-  ul.index { list-style: none; }
-  ul.index li { margin-bottom: 1.75rem; }
-
-  .row {
+  /* ---- hardware shelf ---- */
+  .shelf {
     display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
+    gap: 3.5rem;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 4.5rem 0 1rem;
   }
-  .row .name { font-weight: 600; white-space: nowrap; }
-  .row .leader {
-    flex: 1;
-    border-bottom: 1px dotted var(--dot);
-    transform: translateY(-0.3em);
-  }
-  .row .tag {
+  .dev { display: flex; flex-direction: column; align-items: center; }
+  .dev .scale-wrap { transform-origin: bottom center; }
+  .dev.player .scale-wrap { transform: scale(.66); margin: -63px -56px 0; }
+  .dev.console .scale-wrap { transform: scale(.66); margin: -71px -37px 0; }
+  .dev figcaption {
+    margin-top: .9rem;
+    font-family: "Doto", monospace;
+    font-weight: 700;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
     color: var(--muted);
-    font-size: 0.8rem;
+  }
+  .dev-shadow {
+    width: 70%; height: 14px; margin-top: 10px;
+    border-radius: 50%;
+    background: rgba(40, 30, 10, 0.35);
+    filter: blur(8px);
+  }
+
+  /* ---- sections ---- */
+  h2 {
+    display: flex; align-items: center; gap: 1rem;
+    font-family: "Doto", monospace;
+    font-size: 13px; font-weight: 900;
+    letter-spacing: .3em; text-transform: uppercase;
+    color: var(--ink);
+    margin: 4rem 0 1.2rem;
+  }
+  h2::after { content: ""; flex: 1; border-bottom: 1px solid var(--hair); }
+
+  /* ---- acrylic slab cards ---- */
+  ul.index { list-style: none; }
+  ul.index li.card {
+    --tint: var(--smoke);
+    position: relative;
+    margin-bottom: 1.3rem;
+    padding: 1.05rem 1.25rem 1.15rem;
+    border-radius: 10px;
+    border: 1px solid rgba(21, 20, 18, 0.4);
+    background:
+      linear-gradient(165deg, rgba(255, 253, 247, 0.5), rgba(255, 253, 247, 0.26) 55%, rgba(255, 253, 247, 0.38)),
+      color-mix(in srgb, var(--tint) 11%, transparent);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.75),
+      inset 0 -8px 16px color-mix(in srgb, var(--tint) 10%, transparent),
+      0 14px 28px -14px rgba(40, 30, 10, 0.45);
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+  ul.index li.card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.75),
+      inset 0 -8px 16px color-mix(in srgb, var(--tint) 10%, transparent),
+      0 20px 34px -14px rgba(40, 30, 10, 0.5);
+  }
+  ul.index li.card .num {
+    position: absolute; top: 10px; right: 30px;
+    font-family: "Doto", monospace;
+    font-weight: 900;
+    font-size: 11px; letter-spacing: .1em; color: rgba(21, 20, 18, 0.6);
+  }
+  .card .screw {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background:
+      linear-gradient(115deg, transparent 43%, rgba(60, 50, 30, 0.75) 43% 57%, transparent 57%),
+      radial-gradient(circle at 35% 30%, #f4efe4, #b3ab99 55%, #837b6a);
+    box-shadow: 0 1px 2px rgba(60, 40, 10, 0.4), inset 0 0 1px rgba(0, 0, 0, 0.45);
+  }
+  .card .screw.tl { top: 9px; left: 9px; }
+  .card .screw.tr { top: 9px; right: 9px; }
+  .card .screw.bl { bottom: 9px; left: 9px; }
+  .card .screw.br { bottom: 9px; right: 9px; }
+
+  ul.index li.card.teal   { --tint: var(--teal); }
+  ul.index li.card.green  { --tint: var(--green); }
+  ul.index li.card.amber  { --tint: var(--amber); }
+  ul.index li.card.orange { --tint: var(--orange); }
+  ul.index li.card.rust   { --tint: var(--rust); }
+  ul.index li.card.brick  { --tint: var(--brick); }
+
+  .row { display: flex; align-items: baseline; gap: .8rem; padding-right: 3rem; }
+  .row .name {
+    font-family: "Doto", monospace;
+    font-weight: 900; font-size: 1.15rem; letter-spacing: .06em;
+    text-transform: uppercase;
     white-space: nowrap;
   }
-
-  .body {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    margin-top: 0.35rem;
+  .row .leader { flex: 1; border-bottom: 1px solid rgba(21, 20, 18, 0.35); transform: translateY(-0.32em); }
+  .row .tag {
+    font-family: "Doto", monospace;
+    font-weight: 700;
+    font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    padding: 2px 7px;
+    border: 1px solid rgba(21, 20, 18, 0.5);
+    border-radius: 3px;
+    background: rgba(255, 253, 247, 0.35);
+    white-space: nowrap;
   }
-  .desc {
-    color: var(--muted);
-    font-size: 0.9rem;
-    flex: 1;
-  }
-  .thumb {
-    flex-shrink: 0;
-    line-height: 0;
-  }
+  .row .tag a { text-decoration: none; }
+  .body { display: flex; gap: 1.1rem; align-items: flex-start; margin-top: .55rem; }
+  .desc { color: var(--muted); font-size: .82rem; flex: 1; }
+  .thumb { flex-shrink: 0; line-height: 0; }
   .thumb img {
-    width: 10.5rem;
-    height: auto;
+    width: 10.5rem; height: auto;
     aspect-ratio: 2 / 1;
-    object-fit: cover;
-    object-position: top;
-    border: 1px solid var(--dot);
-    border-radius: 4px;
+    object-fit: cover; object-position: top;
+    border-radius: 6px;
+    border: 1px solid rgba(21, 20, 18, 0.45);
+    box-shadow: 0 8px 16px -8px rgba(40, 30, 10, 0.5);
   }
-  @media (max-width: 480px) {
+  @media (max-width: 520px) {
     .body { flex-direction: column; }
     .thumb img { width: 100%; }
+    .meta.tr, .meta.bl { display: none; }
   }
 
-  footer {
-    margin-top: 4rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--dot);
-    color: var(--muted);
-    font-size: 0.9rem;
+  @media (prefers-reduced-motion: reduce) {
+    .bg i { animation: none; }
+    ul.index li.card { transition: none; }
+    ul.index li.card:hover { transform: none; }
+  }
+
+  /* ================= devices (from design sample) ================= */
+/* ================= CP-1 style amber disc player ================= */
+  .cp1 {
+    position: relative;
+    width: 330px;
+    height: 372px;
+    border-radius: 20px;
+    background:
+      linear-gradient(158deg,
+        rgba(255, 186, 40, 0.94) 0%,
+        rgba(255, 152, 10, 0.95) 45%,
+        rgba(242, 122, 0, 0.96) 78%,
+        rgba(224, 106, 0, 0.97) 100%);
+    border: 1px solid rgba(255, 224, 150, 0.95);
+    box-shadow:
+      inset 0 2px 0 rgba(255, 244, 210, 0.95),
+      inset 3px 0 5px -2px rgba(255, 236, 180, 0.65),
+      inset -3px -4px 7px -3px rgba(160, 66, 0, 0.8),
+      0 18px 28px -14px rgba(150, 70, 0, 0.6),
+      0 4px 10px -5px rgba(150, 70, 0, 0.45);
+  }
+  .cp1 .rim {
+    position: absolute;
+    inset: 7px;
+    border-radius: 14px;
+    border: 2px solid rgba(255, 232, 170, 0.5);
+    box-shadow: inset 0 0 8px rgba(255, 210, 120, 0.4);
+    pointer-events: none;
+  }
+  /* dense silkscreened circuit network */
+  .cp1 .traces {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    opacity: .7;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22330%22 height=%22372%22%3E%3Cg fill=%22none%22 stroke=%22%23a04e00%22 stroke-width=%221.4%22%3E%3Cpath d=%22M18 26h36l12 12h30l10 10h22%22/%3E%3Cpath d=%22M18 36h32l12 12h30l10 10h14%22/%3E%3Cpath d=%22M18 46h28l12 12h26%22/%3E%3Cpath d=%22M18 56h24l12 12h18%22/%3E%3Cpath d=%22M312 88v40l-12 12v32%22/%3E%3Cpath d=%22M302 94v36l-12 12v26%22/%3E%3Cpath d=%22M18 298h30l14-14h22%22/%3E%3Cpath d=%22M18 308h34l14-14h18%22/%3E%3Cpath d=%22M18 318h38l14-14h14%22/%3E%3Cpath d=%22M43 230v42h-18%22/%3E%3Cpath d=%22M287 230v48h18%22/%3E%3C/g%3E%3Cg fill=%22none%22 stroke=%22%23a85400%22 stroke-width=%221.3%22%3E%3Cpath d=%22M43 230 A141 141 0 0 0 287 230%22/%3E%3Cpath d=%22M52 255 A148 148 0 0 0 278 255%22/%3E%3C/g%3E%3Cg fill=%22none%22 stroke=%22%23b85e00%22 stroke-width=%221%22%3E%3Crect x=%22246%22 y=%2220%22 width=%2244%22 height=%2220%22 rx=%222%22/%3E%3Crect x=%22120%22 y=%22338%22 width=%2234%22 height=%2214%22 rx=%222%22/%3E%3C/g%3E%3Cg fill=%22%238c4400%22%3E%3Crect x=%22250%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22256.5%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22263%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22269.5%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22276%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22282.5%22 y=%2214%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22250%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22256.5%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22263%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22269.5%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22276%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22282.5%22 y=%2241%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22124%22 y=%22332%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22131%22 y=%22332%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22138%22 y=%22332%22 width=%222.5%22 height=%225%22/%3E%3Crect x=%22145%22 y=%22332%22 width=%222.5%22 height=%225%22/%3E%3C/g%3E%3Cg fill=%22%23a04e00%22%3E%3Crect x=%2258%22 y=%2286%22 width=%226%22 height=%229%22 rx=%221%22/%3E%3Crect x=%2267%22 y=%2286%22 width=%226%22 height=%229%22 rx=%221%22/%3E%3Crect x=%2284%22 y=%2298%22 width=%226%22 height=%229%22 rx=%221%22/%3E%3Crect x=%2293%22 y=%2298%22 width=%226%22 height=%229%22 rx=%221%22/%3E%3Crect x=%22230%22 y=%2272%22 width=%229%22 height=%226%22 rx=%221%22/%3E%3Crect x=%22230%22 y=%2281%22 width=%229%22 height=%226%22 rx=%221%22/%3E%3Ccircle cx=%22118%22 cy=%2248%22 r=%222.2%22/%3E%3Ccircle cx=%22142%22 cy=%2258%22 r=%222.2%22/%3E%3Ccircle cx=%22102%22 cy=%2258%22 r=%222.2%22/%3E%3Ccircle cx=%22300%22 cy=%22140%22 r=%222.2%22/%3E%3Ccircle cx=%22290%22 cy=%22168%22 r=%222.2%22/%3E%3Ccircle cx=%2284%22 cy=%22284%22 r=%222.2%22/%3E%3Ccircle cx=%2266%22 cy=%22294%22 r=%222.2%22/%3E%3Ccircle cx=%2225%22 cy=%22272%22 r=%222.2%22/%3E%3Ccircle cx=%22305%22 cy=%22278%22 r=%222.2%22/%3E%3C/g%3E%3Cg fill=%22none%22 stroke=%22%23a04e00%22 stroke-width=%221.2%22%3E%3Ccircle cx=%22116%22 cy=%22360%22 r=%223.6%22/%3E%3Ccircle cx=%22212%22 cy=%22360%22 r=%223.6%22/%3E%3C/g%3E%3Cg fill=%22%23a04e00%22%3E%3Ccircle cx=%22116%22 cy=%22360%22 r=%221.4%22/%3E%3Ccircle cx=%22212%22 cy=%22360%22 r=%221.4%22/%3E%3C/g%3E%3Cg fill=%22none%22 stroke=%22%238c4400%22 stroke-width=%221.2%22%3E%3Ccircle cx=%2230%22 cy=%22336%22 r=%223%22/%3E%3Cpath d=%22M25 336h10M30 331v10%22/%3E%3C/g%3E%3Cg fill=%22none%22 stroke=%22%23a85400%22 stroke-width=%220.8%22 opacity=%220.75%22%3E%3Cpath d=%22M252 268l46-46%22/%3E%3Cpath d=%22M252 282l52-52%22/%3E%3Cpath d=%22M252 296l56-56%22/%3E%3Cpath d=%22M258 304l50-50%22/%3E%3Cpath d=%22M272 304l38-38%22/%3E%3Cpath d=%22M286 304l24-24%22/%3E%3C/g%3E%3Cg font-family=%22monospace%22 font-size=%227%22 fill=%22%238c4400%22%3E%3Ctext x=%22248%22 y=%2256%22%3EU1%3C/text%3E%3Ctext x=%2256%22 y=%2282%22%3EC7%3C/text%3E%3Ctext x=%2282%22 y=%2294%22%3ER12%3C/text%3E%3Ctext x=%22224%22 y=%2294%22%3ER4%3C/text%3E%3Ctext x=%22106%22 y=%22372%22%3ETP1%3C/text%3E%3Ctext x=%22202%22 y=%22372%22%3ETP2%3C/text%3E%3Ctext x=%22118%22 y=%22362%22 opacity=%220%22%3E.%3C/text%3E%3Ctext x=%22156%22 y=%22336%22%3EJ2%3C/text%3E%3C/g%3E%3Ctext x=%22196%22 y=%22366%22 font-family=%22monospace%22 font-size=%226.5%22 fill=%22%238c4400%22 opacity=%220.9%22%3ENIXX-CP1 REV.C%3C/text%3E%3C/svg%3E");
+  }
+  /* flex ribbon cable under the shell */
+  .cp1 .ribbon {
+    position: absolute;
+    left: 34px;
+    top: 236px;
+    width: 78px;
+    height: 30px;
+    transform: rotate(-14deg);
+    border-radius: 4px;
+    background:
+      repeating-linear-gradient(90deg,
+        rgba(150, 66, 0, 0.55) 0 3px, rgba(210, 110, 10, 0.35) 3px 6px);
+    box-shadow: inset 0 1px 2px rgba(120, 50, 0, 0.4);
+  }
+  .cp1 .ribbon::after {
+    content: "";
+    position: absolute;
+    right: -12px;
+    top: -2px;
+    width: 14px;
+    height: 34px;
+    border-radius: 3px;
+    background: rgba(120, 52, 0, 0.75);
+  }
+  /* the disc, seen through the shell */
+  .cp1 .disc {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    width: 268px;
+    height: 268px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    background:
+      /* clear inner ring before the data area */
+      radial-gradient(circle,
+        transparent 0 46px,
+        rgba(255, 176, 60, 0.55) 46px 57px,
+        rgba(255, 255, 255, 0.5) 57px 58.5px,
+        transparent 58.5px 100%),
+      repeating-radial-gradient(circle at 50% 50%,
+        rgba(255, 255, 255, 0.09) 0 1.5px, rgba(0, 0, 0, 0.045) 1.5px 3px),
+      conic-gradient(from 218deg,
+        #c9c9d8 0deg, #eab5f7 30deg, #93d5fa 72deg, #d6d6e6 115deg,
+        #ffd394 160deg, #a6c9fa 205deg, #e4e4ec 245deg, #cca6ee 290deg,
+        #97d5ec 330deg, #c9c9d8 360deg);
+    box-shadow:
+      0 6px 10px -5px rgba(140, 60, 0, 0.55),
+      inset 0 1px 2px rgba(255, 255, 255, 0.95),
+      inset 0 -2px 3px rgba(120, 90, 40, 0.3);
+  }
+  .cp1 .disc::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 92px; height: 92px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle,
+        #131318 0 16px,
+        #45454f 16px 18px,
+        #cdcdd3 18px 21px,
+        #8e8e96 21px 22.5px,
+        rgba(255, 200, 120, 0.9) 22.5px 34px,
+        rgba(240, 240, 244, 0.95) 34px 37px,
+        #d6d6dd 37px 42px,
+        #b9b9c1 42px 43.5px,
+        #dfdfe6 43.5px 46px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+  .cp1 .disc::after {
+    content: "";
+    position: absolute;
+    top: calc(50% - 13px);
+    left: calc(50% - 5px);
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.98), rgba(255,255,255,0) 70%);
+  }
+  /* amber acrylic tint over the disc */
+  .cp1 .disc-tint {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    width: 268px;
+    height: 268px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgba(255, 145, 15, 0.18);
+    pointer-events: none;
+  }
+  /* edge control buttons */
+  .cp1 .btn {
+    position: absolute;
+    top: 34px;
+    width: 30px;
+    height: 12px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, rgba(255, 214, 130, 0.95), rgba(236, 138, 10, 0.95));
+    border: 1px solid rgba(160, 74, 0, 0.6);
+    box-shadow: inset 0 1px 0 rgba(255, 244, 210, 0.9), 0 1px 2px rgba(140, 60, 0, 0.45);
+  }
+  .cp1 .btn::after {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 7px;
+    line-height: 1;
+    color: #7c3d00;
+  }
+  .cp1 .btn.play { right: 64px; } .cp1 .btn.play::after { content: "▶"; }
+  .cp1 .btn.stop { right: 28px; } .cp1 .btn.stop::after { content: "■"; }
+  /* speaker perforation patch */
+  .cp1 .grille {
+    position: absolute;
+    left: 28px;
+    bottom: 44px;
+    width: 54px;
+    height: 26px;
+    background: radial-gradient(circle 1.6px at 4px 4px, rgba(120, 52, 0, 0.7) 99%, transparent) 0 0 / 7px 7px repeat;
+  }
+  /* LED dot-matrix status block */
+  .cp1 .led {
+    position: absolute;
+    right: 26px;
+    bottom: 30px;
+    width: 44px;
+    height: 32px;
+    border-radius: 4px;
+    background:
+      radial-gradient(circle 2.1px at 6px 6px, #57b2ff 99%, transparent) 0 0 / 8px 8px repeat,
+      linear-gradient(180deg, #0a1626, #0d1f36);
+    box-shadow:
+      inset 0 1px 3px rgba(0, 0, 0, 0.8),
+      0 0 10px -2px rgba(87, 178, 255, 0.75);
+  }
+  .cp1 .led-label {
+    position: absolute;
+    right: 26px;
+    bottom: 16px;
+    font-size: 6.5px;
+    letter-spacing: .08em;
+    color: #7c3d00;
+    font-weight: 600;
+  }
+  /* silkscreen wordmark + spec block */
+  .cp1 .mark {
+    position: absolute;
+    left: 28px;
+    bottom: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .3em;
+    color: rgba(116, 56, 0, 0.9);
+  }
+  .cp1 .spec {
+    position: absolute;
+    left: 96px;
+    bottom: 17px;
+    font-size: 6px;
+    line-height: 1.5;
+    letter-spacing: .06em;
+    color: rgba(124, 61, 0, 0.8);
+    text-transform: uppercase;
+  }
+  .cp1 .screw {
+    position: absolute;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background:
+      linear-gradient(115deg, transparent 43%, rgba(60, 40, 10, 0.8) 43% 57%, transparent 57%),
+      radial-gradient(circle at 35% 30%, #f7f0e2, #b9ae98 55%, #857a68);
+    box-shadow: 0 1px 2px rgba(120, 50, 0, 0.55), inset 0 0 1px rgba(0, 0, 0, 0.5);
+  }
+  .cp1 .screw.tl { top: 13px; left: 13px; }
+  .cp1 .screw.tr { top: 13px; right: 13px; }
+  .cp1 .screw.bl { bottom: 13px; left: 13px; }
+  .cp1 .screw.br { bottom: 13px; right: 13px; }
+  .cp1 .gloss {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background:
+      linear-gradient(118deg,
+        rgba(255, 255, 255, 0) 16%,
+        rgba(255, 255, 255, 0.32) 24%,
+        rgba(255, 255, 255, 0.05) 31%,
+        rgba(255, 255, 255, 0) 38%),
+      linear-gradient(118deg,
+        rgba(255, 255, 255, 0) 55%,
+        rgba(255, 255, 255, 0.10) 60%,
+        rgba(255, 255, 255, 0) 66%),
+      linear-gradient(180deg, rgba(255, 240, 200, 0.12), rgba(255, 140, 20, 0.08) 60%);
+    pointer-events: none;
+  }
+
+  /* ================= X25-style frosted green tower ================= */
+  .tower {
+    position: relative;
+    width: 216px;
+    height: 420px;
+    border-radius: 14px 14px 10px 10px;
+    overflow: hidden;
+    background: linear-gradient(165deg,
+      rgba(154, 196, 44, 0.5) 0%,
+      rgba(128, 176, 30, 0.58) 45%,
+      rgba(96, 140, 20, 0.68) 100%);
+    border: 1px solid rgba(220, 250, 150, 0.65);
+    box-shadow:
+      inset 0 2px 0 rgba(236, 255, 180, 0.65),
+      inset 2px 0 6px -2px rgba(230, 255, 170, 0.4),
+      inset -5px -6px 12px -5px rgba(30, 50, 5, 0.75),
+      0 24px 38px -16px rgba(0, 0, 0, 0.85),
+      0 0 34px -10px rgba(154, 200, 40, 0.4);
+  }
+  .tower .internals {
+    position: absolute;
+    inset: 0;
+    filter: blur(1.6px);
+    opacity: .95;
+  }
+  /* big cooling fan */
+  .tower .internals .fan {
+    position: absolute;
+    top: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 158px;
+    height: 158px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, rgba(10, 18, 2, 0.95) 0 20px, transparent 20px),
+      repeating-conic-gradient(from 8deg,
+        rgba(16, 28, 3, 0.92) 0deg 20deg,
+        rgba(74, 106, 20, 0.5) 20deg 40deg);
+    border: 7px solid rgba(20, 34, 4, 0.9);
+  }
+  .tower .internals .fan::after {
+    content: "";
+    position: absolute;
+    inset: -13px;
+    border-radius: 50%;
+    border: 2.5px solid rgba(30, 50, 7, 0.75);
+  }
+  /* heatsink fins below the fan */
+  .tower .internals .heatsink {
+    position: absolute;
+    top: 240px; left: 16px; right: 60px; height: 62px;
+    background: repeating-linear-gradient(90deg,
+      rgba(14, 24, 2, 0.95) 0 4px, rgba(96, 132, 26, 0.45) 4px 8px);
+    border-radius: 3px;
+  }
+  /* RAM sticks */
+  .tower .internals .ram {
+    position: absolute;
+    top: 236px; right: 26px; width: 10px; height: 72px;
+    background: rgba(10, 18, 2, 0.92);
+    border-radius: 2px;
+    box-shadow: 14px 0 0 rgba(10, 18, 2, 0.85);
+  }
+  /* capacitor row */
+  .tower .internals .caps {
+    position: absolute;
+    top: 314px; left: 24px; width: 120px; height: 10px;
+    background: radial-gradient(circle 3.5px at 6px 5px, rgba(12, 22, 2, 0.92) 99%, transparent) 0 0 / 15px 10px repeat-x;
+  }
+  /* main board + SoC */
+  .tower .internals .board {
+    position: absolute;
+    top: 330px; left: 18px; right: 34px; height: 46px;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 11px, rgba(120, 162, 38, 0.5) 11px 12px),
+      repeating-linear-gradient(0deg, transparent 0 13px, rgba(110, 150, 34, 0.35) 13px 14px),
+      linear-gradient(180deg, rgba(12, 22, 3, 0.9), rgba(28, 46, 6, 0.85));
+    border-radius: 3px;
+  }
+  .tower .internals .header {
+    position: absolute;
+    top: 352px; right: 44px;
+    width: 30px; height: 8px;
+    background:
+      radial-gradient(circle 1.6px at 3.5px 4px, rgba(210, 232, 150, 0.9) 99%, transparent) 0 0 / 7px 8px repeat-x,
+      rgba(8, 14, 1, 0.95);
+    border-radius: 2px;
+  }
+  .tower .internals .chip {
+    position: absolute;
+    top: 338px; left: 58px; width: 46px; height: 30px;
+    background: rgba(4, 9, 0, 0.98);
+    border-radius: 2px;
+    box-shadow: inset 0 0 0 2px rgba(60, 90, 14, 0.5);
+  }
+  /* drive block */
+  .tower .internals .drive {
+    position: absolute;
+    bottom: 14px; left: 16px; right: 70px; height: 26px;
+    background: linear-gradient(180deg, rgba(18, 30, 4, 0.95), rgba(8, 16, 1, 0.95));
+    border-radius: 3px;
+  }
+  /* wire harness */
+  .tower .internals .wire {
+    position: absolute;
+    border: 3px solid rgba(16, 60, 50, 0.8);
+    border-top: none;
+    border-left: none;
+    border-radius: 0 0 40px 0;
+    width: 52px;
+    height: 70px;
+    top: 300px;
+    right: 14px;
+  }
+  .tower .internals .wire.two {
+    border-color: rgba(90, 70, 8, 0.8);
+    width: 40px;
+    height: 86px;
+    right: 20px;
+    border-radius: 0 0 30px 0;
+  }
+  /* standoff screws on the board */
+  .tower .internals .standoff {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, rgba(220, 240, 170, 0.9), rgba(90, 120, 30, 0.9));
+  }
+  .tower .internals .standoff.a { top: 334px; left: 24px; }
+  .tower .internals .standoff.b { top: 334px; right: 40px; }
+  .tower .internals .standoff.c { top: 368px; left: 24px; }
+  /* frost layer */
+  .tower .frost {
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 30px rgba(50, 78, 8, 0.42), inset 0 -12px 20px rgba(30, 48, 5, 0.4);
+    background:
+      linear-gradient(160deg, rgba(214, 244, 130, 0.14), rgba(170, 214, 70, 0.09) 55%, rgba(130, 174, 40, 0.12)),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.85 0 0 0 0 1 0 0 0 0 0.55 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  /* glowing vent grid */
+  .tower .vent {
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 52px;
+    background:
+      radial-gradient(circle 2.6px at 5px 5px, rgba(14, 24, 2, 0.97) 99%, transparent) 3px 3px / 9px 9px repeat,
+      radial-gradient(90% 130% at 50% 0%, #e6ff70 0%, #bce840 45%, #86b424 100%);
+    box-shadow:
+      0 5px 14px -3px rgba(190, 240, 70, 0.6),
+      inset 0 -3px 5px rgba(40, 60, 8, 0.6);
+  }
+  /* power button */
+  .tower .power {
+    position: absolute;
+    top: 62px; right: 16px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%),
+      radial-gradient(circle, #dcfa74 0 30%, #9cc832 62%, #6f9a1e 100%);
+    box-shadow:
+      0 0 12px -2px rgba(216, 248, 112, 0.95),
+      inset 0 1px 2px rgba(255, 255, 255, 0.75),
+      inset 0 -2px 3px rgba(50, 80, 8, 0.65);
+  }
+  /* front ports + status LED, sharp on the shell */
+  .tower .ports {
+    position: absolute;
+    bottom: 52px; left: 22px;
+    width: 108px; height: 10px;
+    background:
+      linear-gradient(180deg, rgba(10, 18, 2, 0.9), rgba(24, 40, 5, 0.9)) 0 0 / 34px 10px no-repeat,
+      linear-gradient(180deg, rgba(10, 18, 2, 0.9), rgba(24, 40, 5, 0.9)) 44px 0 / 34px 10px no-repeat,
+      linear-gradient(180deg, rgba(10, 18, 2, 0.9), rgba(24, 40, 5, 0.9)) 88px 0 / 20px 10px no-repeat;
+    border-radius: 2px;
+    box-shadow: 0 1px 0 rgba(230, 255, 170, 0.35);
+  }
+  .tower .status {
+    position: absolute;
+    bottom: 53px; right: 24px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 32%, #f2ffb8, #c8f04a 60%, #8cb428);
+    box-shadow: 0 0 8px rgba(220, 250, 120, 0.9);
+  }
+  /* disc slot */
+  .tower .slot {
+    position: absolute;
+    bottom: 88px; left: 26px; right: 26px;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(14, 24, 2, 0.85);
+    box-shadow: 0 1px 0 rgba(230, 255, 170, 0.4), inset 0 1px 1px rgba(0, 0, 0, 0.8);
+  }
+  .tower .etch {
+    position: absolute;
+    bottom: 108px;
+    right: 22px;
+    writing-mode: vertical-rl;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .34em;
+    color: rgba(32, 56, 7, 0.68);
+    text-shadow: 0 1px 0 rgba(230, 255, 170, 0.4);
+  }
+  .tower .sheen {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(105deg,
+        rgba(255, 255, 255, 0) 6%,
+        rgba(255, 255, 255, 0.28) 10%,
+        rgba(255, 255, 255, 0.05) 15%,
+        rgba(255, 255, 255, 0) 22%),
+      linear-gradient(105deg,
+        rgba(255, 255, 255, 0) 68%,
+        rgba(255, 255, 255, 0.10) 72%,
+        rgba(255, 255, 255, 0) 78%);
+    pointer-events: none;
   }
 </style>
 </head>
 <body>
 
+<div class="bg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i><i class="b5"></i></div>
+<div class="frame" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="meta tl"><b>nixx</b><br>Personal index</div>
+<div class="meta tr">Hand-built software<br>6 live · 2 in dev</div>
+<div class="meta bl">Built by Dillon</div>
+<div class="meta br"><a href="https://github.com/dillonco">github.com/dillonco</a></div>
+
+<div class="page">
+
 <header>
+  <p class="kicker">Tools · Games · One person</p>
   <h1>nixx</h1>
-  <p>
+  <p class="intro">
     Tools and games by Dillon — developer, builder, and product manager.
     Everything here is designed, built, and shipped by one person.
     This page is the index.
   </p>
+  <div class="facts">
+    <div><h3>Role</h3><p>Developer · Builder · Product manager</p></div>
+    <div><h3>Status</h3><p>6 live · 2 in development</p></div>
+  </div>
+
+  <div class="shelf">
+    <figure class="dev player">
+      <div class="scale-wrap">
+<div class="cp1">
+        <div class="traces"></div>
+        <div class="ribbon"></div>
+        <div class="rim"></div>
+        <div class="disc"></div>
+        <div class="disc-tint"></div>
+        <span class="btn play"></span><span class="btn stop"></span>
+        <div class="grille"></div>
+        <div class="led"></div>
+        <div class="led-label">CHECK CURRENT STATUS</div>
+        <div class="mark">NIXX</div>
+        <div class="spec">Instant disc audio · model NIXX-CP1<br>DC 14.4V ⎓ 0.8A · made on earth</div>
+        <span class="screw tl"></span><span class="screw tr"></span>
+        <span class="screw bl"></span><span class="screw br"></span>
+        <div class="gloss"></div>
+      </div>
+      </div>
+      <div class="dev-shadow"></div>
+      <figcaption>NIXX-CP1 · Amber acrylic</figcaption>
+    </figure>
+    <figure class="dev console">
+      <div class="scale-wrap">
+<div class="tower">
+        <div class="internals">
+          <div class="fan"></div>
+          <div class="heatsink"></div>
+          <div class="ram"></div>
+          <div class="caps"></div>
+          <div class="board"></div>
+          <div class="chip"></div>
+          <div class="header"></div>
+          <div class="wire"></div>
+          <div class="wire two"></div>
+          <div class="standoff a"></div><div class="standoff b"></div><div class="standoff c"></div>
+          <div class="drive"></div>
+        </div>
+        <div class="frost"></div>
+        <div class="vent"></div>
+        <div class="power"></div>
+        <div class="slot"></div>
+        <div class="ports"></div>
+        <div class="status"></div>
+        <div class="etch">NIXX 25</div>
+        <div class="sheen"></div>
+      </div>
+      </div>
+      <div class="dev-shadow"></div>
+      <figcaption>NIXX-25 · Frosted green</figcaption>
+    </figure>
+  </div>
 </header>
 
 <main>
   <h2>Tools</h2>
   <ul class="index">
-    <li>
-      <div class="row"><a class="name" href="https://notes.nixx.co">Nest</a><span class="leader"></span><span class="tag">notes.nixx.co</span></div>
+    <li class="card teal">
+      <span class="num">01</span>
+      <div class="row"><a class="name" href="https://notes.nixx.co">Nest</a><span class="leader"></span><span class="tag"><a href="https://notes.nixx.co">notes.nixx.co</a></span></div>
       <div class="body">
         <p class="desc">An outliner built for one. Fast, keyboard-first, and text-only — infinite nesting, full-text search, backlinks, and offline support. No AI, no collaboration, just a very fast outline.</p>
         <a class="thumb" href="https://notes.nixx.co" tabindex="-1" aria-hidden="true"><img src="img/nest.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
+      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li>
-      <div class="row"><span class="name">Meetings</span><span class="leader"></span><span class="tag">soon</span></div>
-      <div class="body">
-        <p class="desc">Agendas, notes, and follow-ups in one place, so meetings end with decisions.</p>
-      </div>
+    <li class="card">
+      <span class="num">02</span>
+      <div class="row"><span class="name">Meetings</span><span class="leader"></span><span class="tag">in dev</span></div>
+      <div class="body"><p class="desc">Agendas, notes, and follow-ups in one place, so meetings end with decisions.</p></div>
+      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li>
-      <div class="row"><a class="name" href="https://github.com/dillonco/gitc">gitc</a><span class="leader"></span><span class="tag">open source</span></div>
-      <div class="body">
-        <p class="desc">A command-line companion that smooths out everyday git workflows.</p>
-      </div>
+    <li class="card green">
+      <span class="num">03</span>
+      <div class="row"><a class="name" href="https://github.com/dillonco/gitc">gitc</a><span class="leader"></span><span class="tag"><a href="https://github.com/dillonco/gitc">open source</a></span></div>
+      <div class="body"><p class="desc">A command-line companion that smooths out everyday git workflows.</p></div>
+      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li>
-      <div class="row"><span class="name">CompanyOS</span><span class="leader"></span><span class="tag">soon</span></div>
-      <div class="body">
-        <p class="desc">An operating system for running a company: people, process, and knowledge together.</p>
-      </div>
+    <li class="card">
+      <span class="num">04</span>
+      <div class="row"><span class="name">CompanyOS</span><span class="leader"></span><span class="tag">in dev</span></div>
+      <div class="body"><p class="desc">An operating system for running a company: people, process, and knowledge together.</p></div>
+      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li>
-      <div class="row"><a class="name" href="https://kiteware.com">Kiteware</a><span class="leader"></span><span class="tag">kiteware.com</span></div>
+    <li class="card amber">
+      <span class="num">05</span>
+      <div class="row"><a class="name" href="https://kiteware.com">Kiteware</a><span class="leader"></span><span class="tag"><a href="https://kiteware.com">kiteware.com</a></span></div>
       <div class="body">
         <p class="desc">Ship infrastructure, not YAML. Managed PostgreSQL, caches, S3-compatible storage, and git-push container deploys — provisioned in seconds from a single dashboard.</p>
         <a class="thumb" href="https://kiteware.com" tabindex="-1" aria-hidden="true"><img src="img/kiteware.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
+      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
   </ul>
 
   <h2>Games</h2>
   <ul class="index">
-    <li>
-      <div class="row"><a class="name" href="https://costars.ai">Costars</a><span class="leader"></span><span class="tag">costars.ai</span></div>
+    <li class="card orange">
+      <span class="num">06</span>
+      <div class="row"><a class="name" href="https://costars.ai">Costars</a><span class="leader"></span><span class="tag"><a href="https://costars.ai">costars.ai</a></span></div>
       <div class="body">
         <p class="desc">The Hollywood connection game, inspired by Six Degrees of Kevin Bacon. Find the shortest path between two actors through the movies they share — or try to beat the AI's path.</p>
         <a class="thumb" href="https://costars.ai" tabindex="-1" aria-hidden="true"><img src="img/costars.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
+      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li>
-      <div class="row"><a class="name" href="https://stackz.ca">Stackz</a><span class="leader"></span><span class="tag">stackz.ca</span></div>
+    <li class="card rust">
+      <span class="num">07</span>
+      <div class="row"><a class="name" href="https://stackz.ca">Stackz</a><span class="leader"></span><span class="tag"><a href="https://stackz.ca">stackz.ca</a></span></div>
       <div class="body">
         <p class="desc">Stake. Slam. Take it all. A physics-driven slam game for the browser — bet ten discs into a shared stack, launch the slammer, and keep everything that lands face-up.</p>
         <a class="thumb" href="https://stackz.ca" tabindex="-1" aria-hidden="true"><img src="img/stackz.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
+      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
-    <li>
-      <div class="row"><a class="name" href="https://robertaroyale.com">Roberta Royale</a><span class="leader"></span><span class="tag">robertaroyale.com</span></div>
+    <li class="card brick">
+      <span class="num">08</span>
+      <div class="row"><a class="name" href="https://robertaroyale.com">Roberta Royale</a><span class="leader"></span><span class="tag"><a href="https://robertaroyale.com">robertaroyale.com</a></span></div>
       <div class="body">
         <p class="desc">Free online Euchre, no account needed. Practice against AI, invite friends to a private game, or jump into a quick match — with an interactive tutorial that teaches the game in 20 minutes.</p>
         <a class="thumb" href="https://robertaroyale.com" tabindex="-1" aria-hidden="true"><img src="img/roberta-royale.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
+      <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
     </li>
   </ul>
 </main>
 
-<footer>
-  <p>Built by Dillon · <a href="https://github.com/dillonco">github.com/dillonco</a></p>
-</footer>
-
+</div>
 </body>
 </html>
