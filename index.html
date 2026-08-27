@@ -37,6 +37,26 @@
       linear-gradient(170deg, #131031 0%, #0e0b20 45%, #120c26 100%);
     background-attachment: fixed;
   }
+  /* CRT scanlines + slow refresh sweep */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background-image:
+      linear-gradient(180deg, transparent 0%, rgba(180, 220, 255, 0.03) 45%, rgba(180, 220, 255, 0.055) 50%, transparent 55%),
+      repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 3px);
+    background-size: 100% 40vh, auto;
+    background-repeat: no-repeat, repeat;
+    background-position: 0 -40vh, 0 0;
+    animation: crt-sweep 9s linear infinite;
+  }
+  @keyframes crt-sweep {
+    from { background-position: 0 -40vh, 0 0; }
+    to   { background-position: 0 110vh, 0 0; }
+  }
+
   /* dither field — offset dot grids in neon dust */
   body::before {
     content: "";
@@ -108,7 +128,24 @@
     background-clip: text;
     color: transparent;
     filter: drop-shadow(0 0 18px rgba(143, 141, 255, 0.35));
+    animation: neon-flicker 900ms linear both;
   }
+  /* neon tube warming up, once on load */
+  @keyframes neon-flicker {
+    0% { opacity: 0; }
+    8% { opacity: 0.85; }
+    13% { opacity: 0.15; }
+    22% { opacity: 1; }
+    28% { opacity: 0.35; }
+    36%, 100% { opacity: 1; }
+  }
+  /* blinking block cursor on the boot LCD */
+  #boot::after {
+    content: "▮";
+    margin-left: 3px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
   header .intro {
     margin-top: 1rem;
     color: var(--muted);
@@ -160,6 +197,12 @@
       0 10px 30px -10px color-mix(in srgb, var(--tint) 55%, rgba(0, 0, 0, 0.7)),
       0 0 22px -8px color-mix(in srgb, var(--tint) 60%, transparent);
     transition: transform 180ms ease, box-shadow 180ms ease;
+    animation: rise 480ms ease both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
   }
   /* molded gloss across the top of the shell */
   ul.index li.card::before {
@@ -186,6 +229,13 @@
   ul.index li.card.tangerine  { --tint: var(--tangerine); }
   ul.index li.card.magenta    { --tint: var(--magenta); }
   ul.index li.card.ruby       { --tint: var(--ruby); }
+
+  /* hover light-up: pills brighten, thumbs glow, names halo */
+  ul.index li.card:hover .lcd { filter: brightness(1.3); }
+  ul.index li.card:hover .thumb img {
+    box-shadow: 0 0 26px -4px color-mix(in srgb, var(--tint) 85%, transparent);
+  }
+  a.name:hover { text-shadow: 0 0 9px rgba(234, 230, 255, 0.65); }
 
   .row {
     position: relative;
@@ -253,9 +303,27 @@
     flex-wrap: wrap;
   }
 
+  .ticker {
+    flex-basis: 100%;
+    overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .ticker span {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: ticker 26s linear infinite;
+  }
+  @keyframes ticker { to { transform: translateX(-100%); } }
+
   @media (prefers-reduced-motion: reduce) {
-    ul.index li.card { transition: none; }
+    ul.index li.card { transition: none; animation: none; }
     ul.index li.card:hover { transform: none; }
+    body::after { animation: none; }
+    .wordmark { animation: none; }
+    #boot::after { animation: none; }
+    .ticker span { animation: none; padding-left: 0; }
   }
 </style>
 </head>
@@ -263,7 +331,7 @@
 <div class="page">
 
 <header>
-  <span class="lcd">NIXX.CO ▪ PERSONAL INDEX ▪ 6 LIVE / 2 IN DEV</span>
+  <span class="lcd" id="boot">NIXX.CO ▪ PERSONAL INDEX ▪ 6 LIVE / 2 IN DEV</span>
   <h1 class="wordmark">nixx</h1>
   <p class="intro">
     Tools and games by Dillon — developer, builder, and product manager.
@@ -275,32 +343,32 @@
 <main>
   <h2>Tools</h2>
   <ul class="index">
-    <li class="card ice">
+    <li class="card ice" style="--i:0">
       <div class="row"><a class="name" href="https://notes.nixx.co">Nest</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://notes.nixx.co">notes.nixx.co</a></span></div>
       <div class="body">
         <p class="desc">An outliner built for one. Fast, keyboard-first, and text-only — infinite nesting, full-text search, backlinks, and offline support. No AI, no collaboration, just a very fast outline.</p>
         <a class="thumb" href="https://notes.nixx.co" tabindex="-1" aria-hidden="true"><img src="img/nest.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
     </li>
-    <li class="card">
+    <li class="card" style="--i:1">
       <div class="row"><span class="name">Meetings</span><span class="leader"></span><span class="lcd lcd-amber">IN DEV</span></div>
       <div class="body">
         <p class="desc">Agendas, notes, and follow-ups in one place, so meetings end with decisions.</p>
       </div>
     </li>
-    <li class="card xgreen">
+    <li class="card xgreen" style="--i:2">
       <div class="row"><a class="name" href="https://github.com/dillonco/gitc">gitc</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://github.com/dillonco/gitc">OPEN SOURCE</a></span></div>
       <div class="body">
         <p class="desc">A command-line companion that smooths out everyday git workflows.</p>
       </div>
     </li>
-    <li class="card">
+    <li class="card" style="--i:3">
       <div class="row"><span class="name">CompanyOS</span><span class="leader"></span><span class="lcd lcd-amber">IN DEV</span></div>
       <div class="body">
         <p class="desc">An operating system for running a company: people, process, and knowledge together.</p>
       </div>
     </li>
-    <li class="card grape">
+    <li class="card grape" style="--i:4">
       <div class="row"><a class="name" href="https://kiteware.com">Kiteware</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://kiteware.com">kiteware.com</a></span></div>
       <div class="body">
         <p class="desc">Ship infrastructure, not YAML. Managed PostgreSQL, caches, S3-compatible storage, and git-push container deploys — provisioned in seconds from a single dashboard.</p>
@@ -311,21 +379,21 @@
 
   <h2>Games</h2>
   <ul class="index">
-    <li class="card tangerine">
+    <li class="card tangerine" style="--i:5">
       <div class="row"><a class="name" href="https://costars.ai">Costars</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://costars.ai">costars.ai</a></span></div>
       <div class="body">
         <p class="desc">The Hollywood connection game, inspired by Six Degrees of Kevin Bacon. Find the shortest path between two actors through the movies they share — or try to beat the AI's path.</p>
         <a class="thumb" href="https://costars.ai" tabindex="-1" aria-hidden="true"><img src="img/costars.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
     </li>
-    <li class="card magenta">
+    <li class="card magenta" style="--i:6">
       <div class="row"><a class="name" href="https://stackz.ca">Stackz</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://stackz.ca">stackz.ca</a></span></div>
       <div class="body">
         <p class="desc">Stake. Slam. Take it all. A physics-driven slam game for the browser — bet ten discs into a shared stack, launch the slammer, and keep everything that lands face-up.</p>
         <a class="thumb" href="https://stackz.ca" tabindex="-1" aria-hidden="true"><img src="img/stackz.jpg" alt="" width="1568" height="744" loading="lazy"></a>
       </div>
     </li>
-    <li class="card ruby">
+    <li class="card ruby" style="--i:7">
       <div class="row"><a class="name" href="https://robertaroyale.com">Roberta Royale</a><span class="leader"></span><span class="lcd lcd-green"><a href="https://robertaroyale.com">robertaroyale.com</a></span></div>
       <div class="body">
         <p class="desc">Free online Euchre, no account needed. Practice against AI, invite friends to a private game, or jump into a quick match — with an interactive tutorial that teaches the game in 20 minutes.</p>
@@ -338,8 +406,23 @@
 <footer>
   <span>Built by Dillon</span>
   <span class="lcd"><a href="https://github.com/dillonco">GITHUB.COM/DILLONCO</a></span>
+  <span class="lcd ticker" aria-hidden="true"><span>NIXX ▪ HAND-BUILT SOFTWARE ▪ 5 TOOLS / 3 GAMES ▪ DESIGNED, BUILT + SHIPPED BY ONE PERSON ▪ MORE IN DEV ▪ THANKS FOR VISITING ▪</span></span>
 </footer>
 
 </div>
+<script>
+(() => {
+  const lcd = document.getElementById('boot');
+  if (!lcd || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const text = lcd.textContent;
+  lcd.setAttribute('aria-label', text);
+  lcd.textContent = '';
+  let i = 0;
+  const t = setInterval(() => {
+    lcd.textContent = text.slice(0, ++i);
+    if (i >= text.length) clearInterval(t);
+  }, 28);
+})();
+</script>
 </body>
 </html>
