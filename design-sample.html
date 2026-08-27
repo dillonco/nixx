@@ -44,14 +44,11 @@
     overflow: hidden;
   }
   .studio.light {
-    background:
-      radial-gradient(120% 90% at 50% 18%, #ffffff 0%, #f2f2f4 55%, #dcdce2 100%);
+    background: radial-gradient(120% 90% at 50% 18%, #ffffff 0%, #f2f2f4 55%, #dcdce2 100%);
   }
   .studio.dark {
-    background:
-      radial-gradient(120% 90% at 50% 20%, #33333c 0%, #202027 55%, #131318 100%);
+    background: radial-gradient(120% 90% at 50% 20%, #33333c 0%, #202027 55%, #131318 100%);
   }
-  /* fine studio grain */
   .studio::after {
     content: "";
     position: absolute;
@@ -62,11 +59,11 @@
   }
   .ground {
     position: absolute;
-    bottom: 48px;
+    bottom: 44px;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 50%;
-    filter: blur(14px);
+    filter: blur(11px);
   }
 
   /* ================= CP-1 style amber disc player ================= */
@@ -81,30 +78,53 @@
         rgba(255, 152, 10, 0.95) 45%,
         rgba(242, 122, 0, 0.96) 78%,
         rgba(224, 106, 0, 0.97) 100%);
-    border: 1px solid rgba(255, 224, 150, 0.9);
+    border: 1px solid rgba(255, 224, 150, 0.95);
     box-shadow:
       inset 0 2px 0 rgba(255, 244, 210, 0.95),
-      inset 3px 0 6px -2px rgba(255, 236, 180, 0.6),
-      inset -4px -6px 10px -4px rgba(160, 66, 0, 0.75),
-      0 24px 40px -16px rgba(150, 70, 0, 0.55),
-      0 6px 14px -6px rgba(150, 70, 0, 0.4);
+      inset 3px 0 5px -2px rgba(255, 236, 180, 0.65),
+      inset -3px -4px 7px -3px rgba(160, 66, 0, 0.8),
+      0 18px 28px -14px rgba(150, 70, 0, 0.6),
+      0 4px 10px -5px rgba(150, 70, 0, 0.45);
   }
-  /* inner acrylic rim */
   .cp1 .rim {
     position: absolute;
     inset: 7px;
     border-radius: 14px;
-    border: 2px solid rgba(255, 232, 170, 0.42);
-    box-shadow: inset 0 0 12px rgba(255, 210, 120, 0.35);
+    border: 2px solid rgba(255, 232, 170, 0.5);
+    box-shadow: inset 0 0 8px rgba(255, 210, 120, 0.4);
     pointer-events: none;
   }
-  /* silkscreened circuit traces in the acrylic */
+  /* dense silkscreened circuit network */
   .cp1 .traces {
     position: absolute;
     inset: 0;
     border-radius: 20px;
-    opacity: .5;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='330' height='372'%3E%3Cg fill='none' stroke='%23a85400' stroke-width='1.6'%3E%3Cpath d='M22 34h44v16h38'/%3E%3Cpath d='M22 46h30v22h52'/%3E%3Cpath d='M308 42h-40v18h-30'/%3E%3Cpath d='M24 338h56v-14h36'/%3E%3Cpath d='M306 330h-48v-18h-28'/%3E%3Cpath d='M306 344h-64'/%3E%3C/g%3E%3Cg fill='%23a85400'%3E%3Ccircle cx='104' cy='50' r='2.6'/%3E%3Ccircle cx='104' cy='68' r='2.6'/%3E%3Ccircle cx='238' cy='60' r='2.6'/%3E%3Ccircle cx='116' cy='324' r='2.6'/%3E%3Ccircle cx='230' cy='312' r='2.6'/%3E%3Ccircle cx='242' cy='344' r='2.6'/%3E%3C/g%3E%3Cg fill='none' stroke='%23c06800' stroke-width='1'%3E%3Crect x='250' y='24' width='34' height='12' rx='2'/%3E%3Crect x='40' y='310' width='26' height='10' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+    opacity: .62;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='330' height='372'%3E%3Cg fill='none' stroke='%23a04e00' stroke-width='1.4'%3E%3Cpath d='M22 30h44v14h40v12h26'/%3E%3Cpath d='M22 42h30v20h56v10h24'/%3E%3Cpath d='M22 54h20v34h30'/%3E%3Cpath d='M308 30h-38v16h-34v10h-22'/%3E%3Cpath d='M308 44h-26v22h-30'/%3E%3Cpath d='M308 58h-18v26h-24'/%3E%3Cpath d='M24 340h52v-12h42v-10h20'/%3E%3Cpath d='M24 352h84'/%3E%3Cpath d='M306 326h-44v-16h-26'/%3E%3Cpath d='M306 340h-58v10h-34'/%3E%3Cpath d='M306 352h-40'/%3E%3C/g%3E%3Cg fill='%23a04e00'%3E%3Ccircle cx='132' cy='56' r='2.4'/%3E%3Ccircle cx='112' cy='72' r='2.4'/%3E%3Ccircle cx='72' cy='88' r='2.4'/%3E%3Ccircle cx='214' cy='56' r='2.4'/%3E%3Ccircle cx='252' cy='66' r='2.4'/%3E%3Ccircle cx='266' cy='84' r='2.4'/%3E%3Ccircle cx='138' cy='318' r='2.4'/%3E%3Ccircle cx='118' cy='328' r='2.4'/%3E%3Ccircle cx='236' cy='310' r='2.4'/%3E%3Ccircle cx='214' cy='350' r='2.4'/%3E%3Ccircle cx='266' cy='350' r='2.4'/%3E%3C/g%3E%3Cg fill='none' stroke='%23b85e00' stroke-width='1'%3E%3Crect x='248' y='22' width='36' height='13' rx='2'/%3E%3Crect x='38' y='306' width='28' height='11' rx='2'/%3E%3Crect x='260' y='300' width='22' height='9' rx='2'/%3E%3C/g%3E%3Cg fill='%238c4400'%3E%3Crect x='252' y='36' width='2.5' height='5'/%3E%3Crect x='258' y='36' width='2.5' height='5'/%3E%3Crect x='264' y='36' width='2.5' height='5'/%3E%3Crect x='270' y='36' width='2.5' height='5'/%3E%3Crect x='276' y='36' width='2.5' height='5'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  /* flex ribbon cable under the shell */
+  .cp1 .ribbon {
+    position: absolute;
+    left: 34px;
+    top: 236px;
+    width: 78px;
+    height: 30px;
+    transform: rotate(-14deg);
+    border-radius: 4px;
+    background:
+      repeating-linear-gradient(90deg,
+        rgba(150, 66, 0, 0.55) 0 3px, rgba(210, 110, 10, 0.35) 3px 6px);
+    box-shadow: inset 0 1px 2px rgba(120, 50, 0, 0.4);
+  }
+  .cp1 .ribbon::after {
+    content: "";
+    position: absolute;
+    right: -12px;
+    top: -2px;
+    width: 14px;
+    height: 34px;
+    border-radius: 3px;
+    background: rgba(120, 52, 0, 0.75);
   }
   /* the disc, seen through the shell */
   .cp1 .disc {
@@ -115,19 +135,25 @@
     height: 268px;
     transform: translateX(-50%);
     border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.65);
     background:
+      /* clear inner ring before the data area */
+      radial-gradient(circle,
+        transparent 0 46px,
+        rgba(255, 176, 60, 0.55) 46px 57px,
+        rgba(255, 255, 255, 0.5) 57px 58.5px,
+        transparent 58.5px 100%),
       repeating-radial-gradient(circle at 50% 50%,
-        rgba(255, 255, 255, 0.06) 0 1.5px, rgba(0, 0, 0, 0.02) 1.5px 3px),
+        rgba(255, 255, 255, 0.09) 0 1.5px, rgba(0, 0, 0, 0.045) 1.5px 3px),
       conic-gradient(from 218deg,
-        #cfcfdc 0deg, #edc2f7 30deg, #a8dcfa 72deg, #dcdce8 115deg,
-        #ffd9a3 160deg, #b8d4fa 205deg, #e8e8ee 245deg, #d4b8f0 290deg,
-        #aadcee 330deg, #cfcfdc 360deg);
+        #c9c9d8 0deg, #eab5f7 30deg, #93d5fa 72deg, #d6d6e6 115deg,
+        #ffd394 160deg, #a6c9fa 205deg, #e4e4ec 245deg, #cca6ee 290deg,
+        #97d5ec 330deg, #c9c9d8 360deg);
     box-shadow:
-      0 10px 18px -6px rgba(140, 60, 0, 0.5),
-      inset 0 1px 2px rgba(255, 255, 255, 0.9),
-      inset 0 -2px 4px rgba(120, 90, 40, 0.25);
+      0 6px 10px -5px rgba(140, 60, 0, 0.55),
+      inset 0 1px 2px rgba(255, 255, 255, 0.95),
+      inset 0 -2px 3px rgba(120, 90, 40, 0.3);
   }
-  /* hub: clear ring + center hole showing lens */
   .cp1 .disc::before {
     content: "";
     position: absolute;
@@ -137,15 +163,27 @@
     border-radius: 50%;
     background:
       radial-gradient(circle,
-        #16161c 0 17px,
-        #3a3a44 17px 20px,
-        #c9c9cf 20px 24px,
-        rgba(255, 200, 120, 0.85) 24px 34px,
-        rgba(235, 235, 240, 0.9) 34px 38px,
-        #dfdfe6 38px 46px);
-    box-shadow: inset 0 1px 3px rgba(0,0,0,.35);
+        #131318 0 16px,
+        #45454f 16px 18px,
+        #cdcdd3 18px 21px,
+        #8e8e96 21px 22.5px,
+        rgba(255, 200, 120, 0.9) 22.5px 34px,
+        rgba(240, 240, 244, 0.95) 34px 37px,
+        #d6d6dd 37px 42px,
+        #b9b9c1 42px 43.5px,
+        #dfdfe6 43.5px 46px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
   }
-  /* amber acrylic over the disc */
+  .cp1 .disc::after {
+    content: "";
+    position: absolute;
+    top: calc(50% - 13px);
+    left: calc(50% - 5px);
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.98), rgba(255,255,255,0) 70%);
+  }
+  /* amber acrylic tint over the disc */
   .cp1 .disc-tint {
     position: absolute;
     top: 26px;
@@ -154,18 +192,39 @@
     height: 268px;
     transform: translateX(-50%);
     border-radius: 50%;
-    background: rgba(255, 145, 15, 0.20);
+    background: rgba(255, 145, 15, 0.18);
     pointer-events: none;
   }
-  /* laser lens glint */
-  .cp1 .disc::after {
-    content: "";
+  /* edge control buttons */
+  .cp1 .btn {
     position: absolute;
-    top: calc(50% - 12px);
-    left: calc(50% - 4px);
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.95), rgba(255,255,255,0) 70%);
+    top: 34px;
+    width: 30px;
+    height: 12px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, rgba(255, 214, 130, 0.95), rgba(236, 138, 10, 0.95));
+    border: 1px solid rgba(160, 74, 0, 0.6);
+    box-shadow: inset 0 1px 0 rgba(255, 244, 210, 0.9), 0 1px 2px rgba(140, 60, 0, 0.45);
+  }
+  .cp1 .btn::after {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 7px;
+    line-height: 1;
+    color: #7c3d00;
+  }
+  .cp1 .btn.play { right: 64px; } .cp1 .btn.play::after { content: "▶"; }
+  .cp1 .btn.stop { right: 28px; } .cp1 .btn.stop::after { content: "■"; }
+  /* speaker perforation patch */
+  .cp1 .grille {
+    position: absolute;
+    left: 28px;
+    bottom: 44px;
+    width: 54px;
+    height: 26px;
+    background: radial-gradient(circle 1.6px at 4px 4px, rgba(120, 52, 0, 0.7) 99%, transparent) 0 0 / 7px 7px repeat;
   }
   /* LED dot-matrix status block */
   .cp1 .led {
@@ -180,7 +239,7 @@
       linear-gradient(180deg, #0a1626, #0d1f36);
     box-shadow:
       inset 0 1px 3px rgba(0, 0, 0, 0.8),
-      0 0 12px -2px rgba(87, 178, 255, 0.7);
+      0 0 10px -2px rgba(87, 178, 255, 0.75);
   }
   .cp1 .led-label {
     position: absolute;
@@ -191,42 +250,54 @@
     color: #7c3d00;
     font-weight: 600;
   }
-  /* silkscreen wordmark */
+  /* silkscreen wordmark + spec block */
   .cp1 .mark {
     position: absolute;
-    left: 26px;
-    bottom: 18px;
+    left: 28px;
+    bottom: 22px;
     font-size: 13px;
     font-weight: 700;
     letter-spacing: .3em;
-    color: rgba(124, 61, 0, 0.85);
+    color: rgba(116, 56, 0, 0.9);
   }
-  /* corner screws */
+  .cp1 .spec {
+    position: absolute;
+    left: 96px;
+    bottom: 17px;
+    font-size: 6px;
+    line-height: 1.5;
+    letter-spacing: .06em;
+    color: rgba(124, 61, 0, 0.8);
+    text-transform: uppercase;
+  }
   .cp1 .screw {
     position: absolute;
     width: 9px; height: 9px;
     border-radius: 50%;
     background:
-      linear-gradient(115deg, transparent 44%, rgba(60,40,10,.75) 44% 56%, transparent 56%),
-      radial-gradient(circle at 35% 30%, #f4ede0, #b9ae98 55%, #8d8270);
-    box-shadow: 0 1px 2px rgba(120, 50, 0, 0.5), inset 0 0 1px rgba(0,0,0,.4);
+      linear-gradient(115deg, transparent 43%, rgba(60, 40, 10, 0.8) 43% 57%, transparent 57%),
+      radial-gradient(circle at 35% 30%, #f7f0e2, #b9ae98 55%, #857a68);
+    box-shadow: 0 1px 2px rgba(120, 50, 0, 0.55), inset 0 0 1px rgba(0, 0, 0, 0.5);
   }
   .cp1 .screw.tl { top: 13px; left: 13px; }
   .cp1 .screw.tr { top: 13px; right: 13px; }
   .cp1 .screw.bl { bottom: 13px; left: 13px; }
   .cp1 .screw.br { bottom: 13px; right: 13px; }
-  /* acrylic gloss sweep on top of everything */
   .cp1 .gloss {
     position: absolute;
     inset: 0;
     border-radius: 20px;
     background:
       linear-gradient(118deg,
-        rgba(255, 255, 255, 0) 18%,
-        rgba(255, 255, 255, 0.34) 26%,
-        rgba(255, 255, 255, 0.06) 33%,
-        rgba(255, 255, 255, 0) 40%),
-      linear-gradient(180deg, rgba(255, 240, 200, 0.16), rgba(255, 140, 20, 0.10) 60%);
+        rgba(255, 255, 255, 0) 16%,
+        rgba(255, 255, 255, 0.32) 24%,
+        rgba(255, 255, 255, 0.05) 31%,
+        rgba(255, 255, 255, 0) 38%),
+      linear-gradient(118deg,
+        rgba(255, 255, 255, 0) 55%,
+        rgba(255, 255, 255, 0.10) 60%,
+        rgba(255, 255, 255, 0) 66%),
+      linear-gradient(180deg, rgba(255, 240, 200, 0.12), rgba(255, 140, 20, 0.08) 60%);
     pointer-events: none;
   }
 
@@ -238,111 +309,205 @@
     border-radius: 14px 14px 10px 10px;
     overflow: hidden;
     background: linear-gradient(165deg,
-      rgba(154, 196, 44, 0.55) 0%,
-      rgba(128, 176, 30, 0.62) 45%,
-      rgba(96, 140, 20, 0.72) 100%);
-    border: 1px solid rgba(214, 246, 140, 0.55);
+      rgba(154, 196, 44, 0.5) 0%,
+      rgba(128, 176, 30, 0.58) 45%,
+      rgba(96, 140, 20, 0.68) 100%);
+    border: 1px solid rgba(220, 250, 150, 0.65);
     box-shadow:
-      inset 0 2px 0 rgba(236, 255, 180, 0.6),
-      inset 2px 0 8px -2px rgba(230, 255, 170, 0.35),
-      inset -6px -8px 16px -6px rgba(30, 50, 5, 0.7),
-      0 30px 48px -18px rgba(0, 0, 0, 0.85),
-      0 0 40px -12px rgba(154, 200, 40, 0.4);
+      inset 0 2px 0 rgba(236, 255, 180, 0.65),
+      inset 2px 0 6px -2px rgba(230, 255, 170, 0.4),
+      inset -5px -6px 12px -5px rgba(30, 50, 5, 0.75),
+      0 24px 38px -16px rgba(0, 0, 0, 0.85),
+      0 0 34px -10px rgba(154, 200, 40, 0.4);
   }
-  /* internals, silhouetted behind the frost */
   .tower .internals {
     position: absolute;
     inset: 0;
-    filter: blur(3px);
-    opacity: .9;
+    filter: blur(1.6px);
+    opacity: .95;
   }
+  /* big cooling fan */
+  .tower .internals .fan {
+    position: absolute;
+    top: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 158px;
+    height: 158px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, rgba(10, 18, 2, 0.95) 0 20px, transparent 20px),
+      repeating-conic-gradient(from 8deg,
+        rgba(16, 28, 3, 0.92) 0deg 20deg,
+        rgba(74, 106, 20, 0.5) 20deg 40deg);
+    border: 7px solid rgba(20, 34, 4, 0.9);
+  }
+  .tower .internals .fan::after {
+    content: "";
+    position: absolute;
+    inset: -13px;
+    border-radius: 50%;
+    border: 2.5px solid rgba(30, 50, 7, 0.75);
+  }
+  /* heatsink fins below the fan */
   .tower .internals .heatsink {
     position: absolute;
-    top: 58px; left: 18px; right: 18px; height: 104px;
+    top: 240px; left: 16px; right: 60px; height: 62px;
     background: repeating-linear-gradient(90deg,
-      rgba(18, 30, 3, 0.95) 0 7px, rgba(88, 122, 24, 0.45) 7px 12px);
-    border-radius: 4px;
+      rgba(14, 24, 2, 0.95) 0 4px, rgba(96, 132, 26, 0.45) 4px 8px);
+    border-radius: 3px;
   }
+  /* RAM sticks */
+  .tower .internals .ram {
+    position: absolute;
+    top: 236px; right: 26px; width: 10px; height: 72px;
+    background: rgba(10, 18, 2, 0.92);
+    border-radius: 2px;
+    box-shadow: 14px 0 0 rgba(10, 18, 2, 0.85);
+  }
+  /* capacitor row */
+  .tower .internals .caps {
+    position: absolute;
+    top: 314px; left: 24px; width: 120px; height: 10px;
+    background: radial-gradient(circle 3.5px at 6px 5px, rgba(12, 22, 2, 0.92) 99%, transparent) 0 0 / 15px 10px repeat-x;
+  }
+  /* main board + SoC */
   .tower .internals .board {
     position: absolute;
-    top: 176px; left: 26px; right: 40px; height: 120px;
-    background: linear-gradient(180deg, rgba(14, 26, 3, 0.95), rgba(30, 48, 7, 0.88));
-    border-radius: 4px;
+    top: 330px; left: 18px; right: 34px; height: 46px;
+    background: linear-gradient(180deg, rgba(12, 22, 3, 0.9), rgba(28, 46, 6, 0.85));
+    border-radius: 3px;
   }
   .tower .internals .chip {
     position: absolute;
-    top: 206px; left: 62px; width: 66px; height: 52px;
-    background: rgba(6, 12, 1, 0.98);
-    border-radius: 3px;
+    top: 338px; left: 58px; width: 46px; height: 30px;
+    background: rgba(4, 9, 0, 0.98);
+    border-radius: 2px;
+    box-shadow: inset 0 0 0 2px rgba(60, 90, 14, 0.5);
   }
+  /* drive block */
   .tower .internals .drive {
     position: absolute;
-    bottom: 34px; left: 20px; right: 30px; height: 58px;
-    background: linear-gradient(180deg, rgba(20, 34, 5, 0.95), rgba(10, 20, 2, 0.95));
-    border-radius: 4px;
+    bottom: 14px; left: 16px; right: 70px; height: 26px;
+    background: linear-gradient(180deg, rgba(18, 30, 4, 0.95), rgba(8, 16, 1, 0.95));
+    border-radius: 3px;
   }
-  .tower .internals .cable {
+  /* wire harness */
+  .tower .internals .wire {
     position: absolute;
-    top: 300px; right: 28px; width: 14px; height: 84px;
-    background: rgba(50, 76, 12, 0.8);
-    border-radius: 7px;
-    transform: rotate(8deg);
+    border: 3px solid rgba(16, 60, 50, 0.8);
+    border-top: none;
+    border-left: none;
+    border-radius: 0 0 40px 0;
+    width: 52px;
+    height: 70px;
+    top: 300px;
+    right: 14px;
   }
+  .tower .internals .wire.two {
+    border-color: rgba(90, 70, 8, 0.8);
+    width: 40px;
+    height: 86px;
+    right: 20px;
+    border-radius: 0 0 30px 0;
+  }
+  /* standoff screws on the board */
+  .tower .internals .standoff {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, rgba(220, 240, 170, 0.9), rgba(90, 120, 30, 0.9));
+  }
+  .tower .internals .standoff.a { top: 334px; left: 24px; }
+  .tower .internals .standoff.b { top: 334px; right: 40px; }
+  .tower .internals .standoff.c { top: 368px; left: 24px; }
   /* frost layer */
   .tower .frost {
     position: absolute;
     inset: 0;
-    box-shadow: inset 0 0 34px rgba(50, 78, 8, 0.45), inset 0 -14px 24px rgba(30, 48, 5, 0.4);
+    box-shadow: inset 0 0 30px rgba(50, 78, 8, 0.42), inset 0 -12px 20px rgba(30, 48, 5, 0.4);
     background:
-      linear-gradient(160deg, rgba(214, 244, 130, 0.16), rgba(170, 214, 70, 0.10) 55%, rgba(130, 174, 40, 0.14)),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.85 0 0 0 0 1 0 0 0 0 0.55 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23f)'/%3E%3C/svg%3E");
+      linear-gradient(160deg, rgba(214, 244, 130, 0.14), rgba(170, 214, 70, 0.09) 55%, rgba(130, 174, 40, 0.12)),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.85 0 0 0 0 1 0 0 0 0 0.55 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23f)'/%3E%3C/svg%3E");
   }
   /* glowing vent grid */
   .tower .vent {
     position: absolute;
     top: 0; left: 0; right: 0; height: 52px;
     background:
-      radial-gradient(circle 2.4px at 5px 5px, rgba(16, 26, 2, 0.95) 99%, transparent) 4px 4px / 10px 10px repeat,
-      radial-gradient(90% 130% at 50% 0%, #e2ff6a 0%, #b8e83e 45%, #86b424 100%);
+      radial-gradient(circle 2.6px at 5px 5px, rgba(14, 24, 2, 0.97) 99%, transparent) 3px 3px / 9px 9px repeat,
+      radial-gradient(90% 130% at 50% 0%, #e6ff70 0%, #bce840 45%, #86b424 100%);
     box-shadow:
-      0 6px 18px -4px rgba(190, 240, 70, 0.55),
-      inset 0 -3px 6px rgba(40, 60, 8, 0.55);
+      0 5px 14px -3px rgba(190, 240, 70, 0.6),
+      inset 0 -3px 5px rgba(40, 60, 8, 0.6);
   }
   /* power button */
   .tower .power {
     position: absolute;
-    top: 64px; right: 20px;
-    width: 26px; height: 26px;
+    top: 62px; right: 16px;
+    width: 24px; height: 24px;
     border-radius: 50%;
     background:
-      radial-gradient(circle at 38% 32%, rgba(255,255,255,.5), rgba(255,255,255,0) 55%),
-      radial-gradient(circle, #d8f870 0 30%, #9cc832 62%, #6f9a1e 100%);
+      radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%),
+      radial-gradient(circle, #dcfa74 0 30%, #9cc832 62%, #6f9a1e 100%);
     box-shadow:
-      0 0 14px -2px rgba(216, 248, 112, 0.9),
-      inset 0 1px 2px rgba(255, 255, 255, 0.7),
-      inset 0 -2px 4px rgba(50, 80, 8, 0.6);
+      0 0 12px -2px rgba(216, 248, 112, 0.95),
+      inset 0 1px 2px rgba(255, 255, 255, 0.75),
+      inset 0 -2px 3px rgba(50, 80, 8, 0.65);
   }
-  /* etched wordmark */
+  /* front ports + status LED, sharp on the shell */
+  .tower .ports {
+    position: absolute;
+    bottom: 52px; left: 22px;
+    width: 108px; height: 10px;
+    background:
+      linear-gradient(180deg, rgba(10, 18, 2, 0.9), rgba(24, 40, 5, 0.9)) 0 0 / 34px 10px no-repeat,
+      linear-gradient(180deg, rgba(10, 18, 2, 0.9), rgba(24, 40, 5, 0.9)) 44px 0 / 34px 10px no-repeat,
+      linear-gradient(180deg, rgba(10, 18, 2, 0.9), rgba(24, 40, 5, 0.9)) 88px 0 / 20px 10px no-repeat;
+    border-radius: 2px;
+    box-shadow: 0 1px 0 rgba(230, 255, 170, 0.35);
+  }
+  .tower .status {
+    position: absolute;
+    bottom: 53px; right: 24px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 32%, #f2ffb8, #c8f04a 60%, #8cb428);
+    box-shadow: 0 0 8px rgba(220, 250, 120, 0.9);
+  }
+  /* disc slot */
+  .tower .slot {
+    position: absolute;
+    bottom: 88px; left: 26px; right: 26px;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(14, 24, 2, 0.85);
+    box-shadow: 0 1px 0 rgba(230, 255, 170, 0.4), inset 0 1px 1px rgba(0, 0, 0, 0.8);
+  }
   .tower .etch {
     position: absolute;
-    bottom: 104px;
-    right: 24px;
+    bottom: 108px;
+    right: 22px;
     writing-mode: vertical-rl;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     letter-spacing: .34em;
-    color: rgba(36, 62, 8, 0.6);
-    text-shadow: 0 1px 0 rgba(230, 255, 170, 0.35);
+    color: rgba(32, 56, 7, 0.68);
+    text-shadow: 0 1px 0 rgba(230, 255, 170, 0.4);
   }
-  /* side gloss streak */
   .tower .sheen {
     position: absolute;
     inset: 0;
-    background: linear-gradient(105deg,
-      rgba(255, 255, 255, 0) 6%,
-      rgba(255, 255, 255, 0.30) 10%,
-      rgba(255, 255, 255, 0.05) 15%,
-      rgba(255, 255, 255, 0) 22%);
+    background:
+      linear-gradient(105deg,
+        rgba(255, 255, 255, 0) 6%,
+        rgba(255, 255, 255, 0.28) 10%,
+        rgba(255, 255, 255, 0.05) 15%,
+        rgba(255, 255, 255, 0) 22%),
+      linear-gradient(105deg,
+        rgba(255, 255, 255, 0) 68%,
+        rgba(255, 255, 255, 0.10) 72%,
+        rgba(255, 255, 255, 0) 78%);
     pointer-events: none;
   }
 </style>
@@ -356,15 +521,19 @@
 
   <figure>
     <div class="studio light">
-      <div class="ground" style="width: 300px; height: 36px; background: rgba(150, 90, 20, 0.35);"></div>
+      <div class="ground" style="width: 300px; height: 34px; background: rgba(150, 90, 20, 0.38);"></div>
       <div class="cp1">
         <div class="traces"></div>
+        <div class="ribbon"></div>
         <div class="rim"></div>
         <div class="disc"></div>
         <div class="disc-tint"></div>
+        <span class="btn play"></span><span class="btn stop"></span>
+        <div class="grille"></div>
         <div class="led"></div>
         <div class="led-label">CHECK CURRENT STATUS</div>
         <div class="mark">NIXX</div>
+        <div class="spec">Instant disc audio · model NIXX-CP1<br>DC 14.4V ⎓ 0.8A · made on earth</div>
         <span class="screw tl"></span><span class="screw tr"></span>
         <span class="screw bl"></span><span class="screw br"></span>
         <div class="gloss"></div>
@@ -375,18 +544,26 @@
 
   <figure>
     <div class="studio dark">
-      <div class="ground" style="width: 240px; height: 34px; background: rgba(0, 0, 0, 0.75);"></div>
+      <div class="ground" style="width: 240px; height: 32px; background: rgba(0, 0, 0, 0.78);"></div>
       <div class="tower">
         <div class="internals">
+          <div class="fan"></div>
           <div class="heatsink"></div>
+          <div class="ram"></div>
+          <div class="caps"></div>
           <div class="board"></div>
           <div class="chip"></div>
+          <div class="wire"></div>
+          <div class="wire two"></div>
+          <div class="standoff a"></div><div class="standoff b"></div><div class="standoff c"></div>
           <div class="drive"></div>
-          <div class="cable"></div>
         </div>
         <div class="frost"></div>
         <div class="vent"></div>
         <div class="power"></div>
+        <div class="slot"></div>
+        <div class="ports"></div>
+        <div class="status"></div>
         <div class="etch">NIXX 25</div>
         <div class="sheen"></div>
       </div>
