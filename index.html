@@ -121,6 +121,10 @@
     text-decoration: none;
     transition: background-color 120ms ease, color 120ms ease;
   }
+  .page a:not(.thumb), .meta a {
+    padding: .2rem .45rem;
+    margin: -.2rem -.45rem;
+  }
   a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
   .page a:hover, .meta a:hover {
     background: linear-gradient(94deg, #e0703a, #c98a3c 45%, #4e8f86);
@@ -165,7 +169,8 @@
     display: grid;
     grid-template-columns: 11.5rem 1fr 9rem;
     gap: 1.6rem;
-    padding: 1.05rem 0 1.15rem;
+    padding: 1.05rem .8rem 1.15rem;
+    margin: 0 -.8rem;
     border-bottom: 1px solid rgba(15, 14, 11, 0.28);
     align-items: start;
     transition: background-color 160ms ease;
