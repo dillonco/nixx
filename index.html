@@ -13,11 +13,20 @@
     --hair: rgba(15, 14, 11, 0.65);
   }
   body {
-    font: 15px/1.65 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font: 15px/1.55 "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: var(--ink);
     background: #d8cba8;
-    min-height: 100vh;
-    overflow-x: hidden;
+    height: 100vh;
+    overflow: hidden;
+  }
+  /* all scrolling happens inside the frame so the glass never crosses it */
+  .viewport {
+    position: fixed;
+    inset: 15px;
+    overflow-y: auto;
+    z-index: 2;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(15, 14, 11, 0.45) transparent;
   }
 
   /* ---- animated undertone gradient (WebGL domain-warped noise) ---- */
@@ -59,7 +68,7 @@
   .meta {
     position: fixed; z-index: 7;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
     line-height: 1.55; color: var(--ink);
   }
@@ -87,8 +96,8 @@
   .page {
     position: relative; z-index: 2;
     max-width: 52rem;
-    margin: 5.5rem auto 6rem;
-    padding: 3.2rem 3rem 3.8rem;
+    margin: 3.5rem auto 4rem;
+    padding: 2.2rem 2.6rem 2.6rem;
     border-radius: 20px;
     border: 1px solid rgba(255, 250, 235, 0.92);
     background: linear-gradient(165deg, rgba(246, 240, 222, 0.5), rgba(246, 240, 222, 0.3) 55%, rgba(246, 240, 222, 0.42));
@@ -129,17 +138,17 @@
 
   .kicker {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 1rem;
+    color: var(--ink);
+    margin-bottom: .8rem;
   }
   .intro { max-width: 33rem; color: var(--muted); }
-  .facts { display: flex; gap: 4rem; flex-wrap: wrap; margin-top: 2.2rem; }
+  .facts { display: flex; gap: 3rem; flex-wrap: wrap; margin-top: 1.4rem; }
   .facts h3 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--muted); font-weight: 600; margin-bottom: .3rem;
+    color: var(--ink); font-weight: 800; margin-bottom: .25rem;
   }
   .facts p { font-size: .92rem; }
 
@@ -147,16 +156,19 @@
   h2 {
     display: flex; align-items: center; gap: 1rem;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 11px; font-weight: 700;
-    letter-spacing: .28em; text-transform: uppercase;
+    font-size: 13px; font-weight: 800;
+    letter-spacing: .3em; text-transform: uppercase;
     color: var(--ink);
-    margin: 4.5rem 0 .4rem;
+    margin: 3.4rem 0 .5rem;
+    padding-top: 1.6rem;
+    border-top: 2px solid var(--ink);
   }
-  h2::after { content: ""; flex: 1; border-bottom: 1px solid var(--hair); }
+  main h2:first-of-type { margin-top: 2.4rem; }
+  h2::after { content: ""; flex: 1; border-bottom: 2px solid var(--ink); }
 
   /* ---- editorial project rows with trace dividers ---- */
   ul.index { list-style: none; }
-  li.proj { padding: 1.7rem 0 1.9rem; }
+  li.proj { padding: 1rem 0 1.1rem; }
   /* trace divider: hairline with a via and a test-point ring */
   li.proj + li.proj { position: relative; }
   li.proj + li.proj::before {
@@ -178,17 +190,17 @@
     color: var(--muted);
   }
   .row .name {
-    font-weight: 600; font-size: 1.12rem; letter-spacing: -0.01em;
+    font-weight: 800; font-size: 1.1rem; letter-spacing: -0.01em;
     white-space: nowrap;
   }
   .row .leader { flex: 1; border-bottom: 1px solid rgba(23, 21, 15, 0.35); transform: translateY(-0.35em); }
   .row .tag {
-    font-weight: 600;
+    font-weight: 700;
     font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
     white-space: nowrap;
   }
-  .body { display: flex; gap: 1.4rem; align-items: flex-start; margin-top: .7rem; }
-  .desc { color: var(--muted); font-size: .95rem; line-height: 1.6; flex: 1; max-width: 34rem; }
+  .body { display: flex; gap: 1.2rem; align-items: flex-start; margin-top: .4rem; }
+  .desc { color: var(--muted); font-size: .92rem; line-height: 1.5; flex: 1; max-width: 34rem; }
   .thumb { flex-shrink: 0; line-height: 0; }
   .thumb img {
     width: 9.5rem; height: auto;
@@ -213,7 +225,7 @@
 <span class="fid bl" aria-hidden="true"></span><span class="fid br" aria-hidden="true"></span>
 
 <div class="meta tl"><b>nixx</b><br>Personal index</div>
-<div class="meta tr">Hand-built software<br>6 live · 2 in dev</div>
+<div class="meta tr">6 live · 2 in dev</div>
 <div class="meta bl">Built by Dillon</div>
 <div class="meta br"><a href="https://github.com/dillonco">github.com/dillonco</a></div>
 
@@ -222,6 +234,7 @@
   <a href="#p05">05</a><a href="#p06">06</a><a href="#p07">07</a><a href="#p08">08</a>
 </nav>
 
+<div class="viewport">
 <div class="page">
 
 <header>
@@ -294,6 +307,7 @@
   </ul>
 </main>
 
+</div>
 </div>
 
 <script>
